@@ -1,0 +1,15 @@
+order: 2
+year: 2025
+title:
+  es: Observatorio
+  en: Observatory
+summary:
+  es: Panel que muestra qué planetas son visibles esta noche desde Ecuador.
+  en: Dashboard that shows which planets are visible tonight from Ecuador.
+description:
+  es: Calcula posiciones con efemérides públicas, las guarda en caché y dibuja el cielo de la línea ecuatorial hora por hora.
+  en: Computes positions from public ephemerides, caches them and draws the equatorial sky hour by hour.
+image: projects/observatorio.svg
+technologies: [TypeScript, Astro, Three.js]
+repository: https://github.com/usuario/observatorio
+demo: https://usuario.github.io/observatorio

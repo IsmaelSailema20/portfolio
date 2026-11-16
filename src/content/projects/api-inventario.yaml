@@ -1,0 +1,14 @@
+order: 1
+year: 2025
+title:
+  es: API de inventario
+  en: Inventory API
+summary:
+  es: Servicio REST para controlar existencias en varias bodegas.
+  en: REST service to track stock across several warehouses.
+description:
+  es: Maneja reservas concurrentes con bloqueo optimista, expone eventos de cambio de stock y documenta cada endpoint con OpenAPI.
+  en: Handles concurrent reservations with optimistic locking, publishes stock change events and documents every endpoint with OpenAPI.
+image: projects/api-inventario.svg
+technologies: [Java, Spring Boot, PostgreSQL]
+repository: https://github.com/usuario/api-inventario

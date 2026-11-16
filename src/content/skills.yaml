@@ -1,0 +1,35 @@
+- id: backend
+  name:
+    es: Backend
+    en: Backend
+  description:
+    es: Donde paso la mayor parte del tiempo. Diseño APIs y servicios pensando en que otra persona pueda mantenerlos.
+    en: Where I spend most of my time. I design APIs and services so that someone else can maintain them.
+  items: [Java, Spring Boot, Node.js, REST, GraphQL]
+
+- id: data
+  name:
+    es: Datos
+    en: Data
+  description:
+    es: Modelo los datos antes que el código. Mido las consultas y uso colas cuando el trabajo no necesita respuesta inmediata.
+    en: I model the data before the code. I measure queries and use queues when the work does not need an immediate answer.
+  items: [PostgreSQL, MongoDB, Redis, Kafka]
+
+- id: frontend
+  name:
+    es: Frontend
+    en: Frontend
+  description:
+    es: Lo suficiente para entregar un producto completo, con interfaces livianas y accesibles.
+    en: Enough to ship a complete product, with lightweight and accessible interfaces.
+  items: [TypeScript, Astro, React, Three.js]
+
+- id: tooling
+  name:
+    es: Herramientas
+    en: Tooling
+  description:
+    es: Automatizo pruebas y despliegues para que publicar sea rutina y no un evento.
+    en: I automate tests and deployments so that releasing is routine instead of an event.
+  items: [Docker, GitHub Actions, AWS, Postman]

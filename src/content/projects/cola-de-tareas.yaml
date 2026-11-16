@@ -1,0 +1,14 @@
+order: 3
+year: 2024
+title:
+  es: Cola de tareas
+  en: Task queue
+summary:
+  es: Procesador de trabajos en segundo plano con reintentos y prioridades.
+  en: Background job processor with retries and priorities.
+description:
+  es: Garantiza entrega al menos una vez, aplica espera exponencial y ofrece un panel para inspeccionar trabajos fallidos.
+  en: Guarantees at-least-once delivery, applies exponential backoff and offers a panel to inspect failed jobs.
+image: projects/cola-de-tareas.svg
+technologies: [Node.js, Redis, Docker]
+repository: https://github.com/usuario/cola-de-tareas
