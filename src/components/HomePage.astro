@@ -1,0 +1,42 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import About from './sections/About.astro';
+import Contact from './sections/Contact.astro';
+import Experience from './sections/Experience.astro';
+import Hero from './sections/Hero.astro';
+import Projects from './sections/Projects.astro';
+import { localize, type Locale } from '../i18n/locales';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const profileEntry = await getEntry('profile', 'profile');
+if (!profileEntry) {
+  throw new Error('Missing src/content/profile.yaml');
+}
+const profile = profileEntry.data;
+
+const skillGroups = await getCollection('skills');
+const experiences = (await getCollection('experience')).sort((first, second) =>
+  second.data.start.localeCompare(first.data.start),
+);
+const projects = (await getCollection('projects')).sort(
+  (first, second) => first.data.order - second.data.order,
+);
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${profile.name} · ${localize(profile.role, locale)}`}
+  ownerName={profile.name}
+>
+  <Hero locale={locale} profile={profile} />
+  <About locale={locale} profile={profile} skillGroups={skillGroups} />
+  <Experience locale={locale} experiences={experiences} />
+  <Projects locale={locale} projects={projects} />
+  <Contact locale={locale} profile={profile} />
+</BaseLayout>

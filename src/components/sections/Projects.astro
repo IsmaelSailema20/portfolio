@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ProjectCard from '../ui/ProjectCard.astro';
+import SectionShell from '../ui/SectionShell.astro';
+import type { Locale } from '../../i18n/locales';
+
+interface Props {
+  locale: Locale;
+  projects: CollectionEntry<'projects'>[];
+}
+
+const { locale, projects } = Astro.props;
+---
+
+<SectionShell
+  stageId="projects"
+  locale={locale}
+  side="right"
+  itemCount={projects.length}
+  stepCount={projects.length}
+>
+  <div class="project-grid">
+    {
+      projects.map((project, projectIndex) => (
+        <ProjectCard
+          locale={locale}
+          project={project.data}
+          projectIndex={projectIndex}
+          projectCount={projects.length}
+        />
+      ))
+    }
+  </div>
+</SectionShell>
+
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    align-items: start;
+    gap: var(--space-3);
+  }
+</style>
