@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "testRunner": "vitest",
+  "coverageAnalysis": "perTest",
+  "reporters": ["clear-text", "progress", "html"],
+  "mutate": [
+    "src/i18n/locales.ts",
+    "src/i18n/paths.ts",
+    "src/i18n/formatPeriod.ts",
+    "src/scene/core/math.ts",
+    "src/scene/core/journeyMath.ts",
+    "src/scene/core/quality.ts",
+    "src/scene/core/panelMath.ts",
+    "src/scene/core/telemetry.ts",
+    "src/interactions/mission.ts",
+    "src/interactions/modeResolution.ts",
+    "src/minigame/rules.ts"
+  ]
+}
