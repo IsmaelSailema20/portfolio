@@ -1,0 +1,77 @@
+import { defineCollection } from 'astro:content';
+import { file, glob } from 'astro/loaders';
+import { z } from 'astro/zod';
+
+const localizedText = z.object({
+  es: z.string().min(1),
+  en: z.string().min(1),
+});
+
+const localizedParagraphs = z.object({
+  es: z.array(z.string().min(1)).min(1),
+  en: z.array(z.string().min(1)).min(1),
+});
+
+const yearMonth = z.string().regex(/^\d{4}-\d{2}$/);
+
+const profile = defineCollection({
+  loader: glob({ pattern: 'profile.yaml', base: './src/content' }),
+  schema: z.object({
+    name: z.string().min(1),
+    location: z.string().min(1),
+    email: z.email(),
+    role: localizedText,
+    tagline: localizedText,
+    bio: localizedParagraphs,
+    links: z.array(
+      z.object({
+        kind: z.enum(['github', 'linkedin', 'other']),
+        label: z.string().min(1),
+        url: z.url(),
+      }),
+    ),
+    curriculum: localizedText,
+  }),
+});
+
+const skills = defineCollection({
+  loader: file('./src/content/skills.yaml'),
+  schema: z.object({
+    name: localizedText,
+    description: localizedText,
+    items: z.array(z.string().min(1)).min(1),
+  }),
+});
+
+const experience = defineCollection({
+  loader: glob({ pattern: '*.yaml', base: './src/content/experience' }),
+  schema: z.object({
+    company: z.string().min(1),
+    start: yearMonth,
+    end: yearMonth.optional(),
+    role: localizedText,
+    summary: localizedText,
+    challenge: z.object({
+      problem: localizedText,
+      approach: localizedText,
+    }),
+    technologies: z.array(z.string().min(1)),
+  }),
+});
+
+const projects = defineCollection({
+  loader: glob({ pattern: '*.yaml', base: './src/content/projects' }),
+  schema: z.object({
+    order: z.number().int(),
+    year: z.number().int(),
+    title: localizedText,
+    summary: localizedText,
+    description: localizedText,
+    technologies: z.array(z.string().min(1)),
+    image: z.string().min(1).optional(),
+    repository: z.url().optional(),
+    demo: z.url().optional(),
+  }),
+});
+
+export const collections = { profile, skills, experience, projects };
