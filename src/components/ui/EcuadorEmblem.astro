@@ -1,0 +1,40 @@
+---
+---
+
+<svg class="ecuador-emblem" viewBox="0 0 32 40" aria-hidden="true">
+  <path
+    class="ecuador-emblem__condor"
+    d="M16 11 Q10 3.500 2 7.500 Q9.500 7.500 14 12.500 H18 Q22.500 7.500 30 7.500 Q22 3.500 16 11 Z"
+  ></path>
+  <circle class="ecuador-emblem__condor" cx="16" cy="9" r="1.750"></circle>
+  <clipPath id="ecuador-emblem-shield">
+    <ellipse cx="16" cy="25" rx="10" ry="13"></ellipse>
+  </clipPath>
+  <g clip-path="url(#ecuador-emblem-shield)">
+    <rect x="0" y="10" width="32" height="30" fill="#8ecbe8"></rect>
+    <circle cx="16" cy="16.500" r="2.500" fill="#f6c21c"></circle>
+    <path d="M4.500 32 L17.500 18.500 L28 32 Z" fill="#6f8fa3"></path>
+    <path d="M13.500 22.750 L17.500 18.500 L21 23 L18 22 L16 23.750 Z" fill="#f4f4f0"></path>
+    <rect x="0" y="30.500" width="32" height="10" fill="#3f8f4f"></rect>
+    <path d="M17.500 30.500 Q13 34 16.500 39" fill="none" stroke="#2f6fb0" stroke-width="1.750"></path>
+  </g>
+  <ellipse class="ecuador-emblem__border" cx="16" cy="25" rx="10" ry="13"></ellipse>
+</svg>
+
+<style>
+  .ecuador-emblem {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .ecuador-emblem__condor {
+    fill: var(--color-text);
+  }
+
+  .ecuador-emblem__border {
+    fill: none;
+    stroke: var(--flag-emblem);
+    stroke-width: 1.5;
+  }
+</style>
