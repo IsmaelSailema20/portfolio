@@ -19,18 +19,20 @@ Todo el contenido vive en `src/content/`. Cada texto visible lleva `es` y `en`; 
 
 | Qué                                            | Dónde                                                                                  |
 | ---------------------------------------------- | -------------------------------------------------------------------------------------- |
-| Nombre, rol, bio, correo, enlaces, ruta del CV | `src/content/profile.yaml`                                                             |
-| Grupos de tecnologías (módulos de la estación) | `src/content/skills.yaml`                                                              |
-| Experiencia (estrellas de la constelación)     | un archivo por empleo en `src/content/experience/`                                     |
-| Proyectos (paneles del enjambre de Dyson)      | un archivo por proyecto en `src/content/projects/`                                     |
-| Captura de cada proyecto                       | campo `image` del proyecto, con el archivo en `public/projects/` (640×400 recomendado) |
+| Nombre, rol, objetivo, bio, correo, enlaces, ruta del CV | `src/content/profile.yaml`                                                   |
+| Formación académica                            | un archivo por estudio en `src/content/education/`                                     |
+| Grupos de tecnologías (puestos de la base lunar) | `src/content/skills.yaml`                                                            |
+| Proyectos (estrellas de la constelación)       | un archivo por proyecto en `src/content/projects/`                                     |
+| Experiencia (paneles del enjambre de Dyson)    | un archivo por empleo en `src/content/experience/`                                     |
+| Captura de cada proyecto (tarjeta)             | campo `image` del proyecto, con el archivo en `public/projects/` (640×400 recomendado) |
 | Textos de interfaz (botones, títulos, menú)    | `src/i18n/ui.ts`                                                                       |
 | CV descargable                                 | `public/cv/cv-es.pdf` y `public/cv/cv-en.pdf`                                          |
 
 Para agregar un proyecto o una experiencia, copia un archivo existente de su carpeta y edítalo. Para quitarlo, borra el archivo. La escena 3D se ajusta sola a la cantidad de entradas.
 
 - La experiencia se ordena por `start` (más reciente primero). Sin `end` se muestra como actual.
-- Los proyectos se ordenan por `order`.
+- La formación se ordena por `start` (más reciente primero). Sin `end` se muestra como actual.
+- Cada proyecto lleva una `category`: `personal`, `contribution` (colaboración en un proyecto ajeno) o `client`. Se agrupan en ese orden y, dentro de cada categoría, por `order`.
 
 ## Cambiar el aspecto
 
@@ -48,6 +50,8 @@ src/scene/
 └─ stages/         una parada por archivo
 ```
 
-En modo inmersivo cada panel queda fijo mientras dura su parada. Experiencia y proyectos avanzan un elemento a la vez con el scroll; cada elemento marcado con `data-step` es un paso. El mapa de ruta del encabezado, la telemetría y el botón "Atravesar el agujero" (vuelve al inicio y suma una misión) solo existen en este modo.
+En modo inmersivo cada panel queda fijo mientras dura su parada. Las secciones con varios elementos avanzan uno a la vez con el scroll; cada elemento marcado con `data-step` es un paso. Al pie del panel hay puntos y botones anterior/siguiente (`StepNavigation`), y las flechas ←/→ del teclado saltan al elemento o parada vecina. El texto largo de cada elemento va en un bloque `step-detail` que se despliega con "Ver detalle" (`DetailToggle`); en el modo clásico siempre se ve. El mapa de ruta del encabezado, la telemetría y el botón "Atravesar el agujero" (vuelve al inicio y suma una misión) solo existen en este modo.
+
+El recorrido sigue distancias reales: base de lanzamiento (Inicio), estación orbital a 408 km (Sobre mí: objetivo, bio y formación, un módulo por bloque), base lunar a 384.400 km (Tecnologías: el cohete orbita la Luna y pasa sobre un puesto por grupo, ubicado donde está el cohete cuando ese grupo está activo), cinturón de asteroides a 2,8 UA (Proyectos: una estrella por proyecto y el minijuego de control manual), enjambre de Dyson a 4,2 años luz (Experiencia: un panel por empleo) y agujero de gusano (Contacto). Las distancias de la telemetría están en `src/scene/core/telemetry.ts`, una por parada.
 
 Cada parada define sus `waypoints` (por dónde pasa el cohete), su `cameraOffset` y su `update`. Para añadir una parada: crea un archivo en `stages/`, agrégalo en `journey.ts`, añade su identificador en `stageIds` (`src/i18n/ui.ts`) y crea su sección en `src/components/sections/`.
