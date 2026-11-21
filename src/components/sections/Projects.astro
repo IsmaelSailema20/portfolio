@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import ProjectCard from '../ui/ProjectCard.astro';
+import ProjectMission from '../ui/ProjectMission.astro';
 import SectionShell from '../ui/SectionShell.astro';
 import { localize, type Locale } from '../../i18n/locales';
 import { ui } from '../../i18n/ui';
@@ -21,9 +21,16 @@ const dictionary = ui[locale].projects;
   itemCount={projects.length}
   stepCount={projects.length}
 >
-  <div class="project-grid">
+  <div class="mission-selector" style={`--mission-count: ${projects.length}`} data-mission-selector>
     {
-      projects.map((project) => <ProjectCard locale={locale} project={project.data} />)
+      projects.map((project, projectIndex) => (
+        <ProjectMission
+          locale={locale}
+          project={project}
+          projectIndex={projectIndex}
+          isSelected={projectIndex === 0}
+        />
+      ))
     }
   </div>
   <p class="label only-immersive projects__hint">{dictionary.manualControlHint}</p>
@@ -43,11 +50,23 @@ const dictionary = ui[locale].projects;
 </SectionShell>
 
 <style>
-  .project-grid {
+  .mission-selector {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
-    align-items: start;
-    gap: var(--space-3);
+    gap: 0.35rem;
+  }
+
+  @container (min-width: 52rem) {
+    .mission-selector {
+      grid-template-columns: minmax(15rem, 21rem) minmax(0, 1fr);
+      grid-template-rows: repeat(var(--mission-count), auto) 1fr;
+      gap: 0.35rem var(--space-5);
+    }
+  }
+
+  :global([data-mode='immersive']) .mission-selector {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
   }
 
   .projects__hint {

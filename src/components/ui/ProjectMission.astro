@@ -1,0 +1,291 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import DetailToggle from './DetailToggle.astro';
+import TechHologram from './TechHologram.astro';
+import { localize, type Locale } from '../../i18n/locales';
+import { joinBasePath } from '../../i18n/paths';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  project: CollectionEntry<'projects'>;
+  projectIndex: number;
+  isSelected: boolean;
+}
+
+const { locale, project, projectIndex, isSelected } = Astro.props;
+const dictionary = ui[locale].projects;
+const title = localize(project.data.title, locale);
+const panelId = `mission-${project.id}`;
+const missionNumber = String(projectIndex + 1).padStart(2, '0');
+const links = [
+  { label: dictionary.repository, url: project.data.repository },
+  { label: dictionary.demo, url: project.data.demo },
+].filter((link) => link.url !== undefined);
+---
+
+<div
+  class:list={['mission', { 'is-selected': isSelected }]}
+  style={`--mission-row: ${projectIndex + 1}`}
+  data-step
+  data-mission
+>
+  <button
+    class="mission__tab"
+    type="button"
+    aria-controls={panelId}
+    aria-expanded={String(isSelected)}
+    data-mission-tab
+  >
+    <span class="mission__number">{missionNumber}</span>
+    <span class="mission__heading">
+      <span class="mission__title">{title}</span>
+      <span class="label mission__meta">
+        {dictionary.categories[project.data.category]} · {project.data.year}
+      </span>
+    </span>
+  </button>
+  <div class="mission__panel" id={panelId}>
+    {
+      project.data.image && (
+        <div class="mission__screen">
+          <img
+            class="mission__image"
+            src={joinBasePath(import.meta.env.BASE_URL, project.data.image)}
+            alt={title}
+            width="640"
+            height="400"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      )
+    }
+    <p class="mission__summary">{localize(project.data.summary, locale)}</p>
+    <DetailToggle locale={locale} />
+    <p class="mission__description step-detail">{localize(project.data.description, locale)}</p>
+    <ul class="mission__technologies">
+      {
+        project.data.technologies.map((technology, technologyIndex) => (
+          <TechHologram technology={technology} index={technologyIndex} compact />
+        ))
+      }
+    </ul>
+    <ul class="mission__links">
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.url} rel="noopener">
+              {link.label} ↗
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  .mission {
+    display: contents;
+  }
+
+  .mission__tab {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+    border: 0;
+    border-left: 2px solid var(--color-line);
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      border-color var(--transition),
+      background-color var(--transition);
+  }
+
+  .mission__tab:hover {
+    border-left-color: var(--color-interactive);
+    background: linear-gradient(90deg, rgb(111 214 232 / 0.06), transparent);
+  }
+
+  .mission.is-selected .mission__tab {
+    border-left-color: var(--color-accent);
+    background: linear-gradient(90deg, rgb(242 160 61 / 0.1), transparent);
+  }
+
+  .mission__number {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+  }
+
+  .mission__heading {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .mission__title {
+    font-size: clamp(1.25rem, 1rem + 0.9vw, 1.7rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-muted);
+    transition: color var(--transition);
+  }
+
+  .mission__tab:hover .mission__title {
+    color: var(--color-text);
+  }
+
+  .mission.is-selected .mission__title,
+  .mission.is-selected .mission__number {
+    color: var(--color-accent);
+  }
+
+  .mission__panel {
+    display: none;
+    align-content: start;
+    gap: var(--space-2);
+    padding: var(--space-2) 0 var(--space-4);
+  }
+
+  .mission.is-selected .mission__panel {
+    display: grid;
+  }
+
+  .mission__screen {
+    position: relative;
+    margin-bottom: var(--space-1);
+    border: 1px solid rgb(111 214 232 / 0.35);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow:
+      0 0 48px rgb(111 214 232 / 0.14),
+      0 24px 40px -24px rgb(111 214 232 / 0.45);
+  }
+
+  .mission__screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgb(111 214 232 / 0.1), transparent 30%, transparent 70%, rgb(111 214 232 / 0.12)),
+      repeating-linear-gradient(to bottom, rgb(7 11 20 / 0.28) 0 1px, transparent 1px 4px);
+    pointer-events: none;
+  }
+
+  .mission__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .mission__summary {
+    max-width: 52ch;
+    font-size: var(--text-lead);
+    line-height: 1.4;
+  }
+
+  .mission__description {
+    max-width: 60ch;
+    color: var(--color-muted);
+  }
+
+  .mission__technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) 0.25rem;
+    margin-top: var(--space-1);
+  }
+
+  .mission__links {
+    display: flex;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  @container (min-width: 52rem) {
+    .mission__tab {
+      grid-column: 1;
+      grid-row: var(--mission-row);
+    }
+
+    .mission__panel {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      padding: 0;
+    }
+
+    .mission__screen {
+      transform: perspective(1400px) rotateY(-5deg);
+      transform-origin: left center;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .mission.is-selected .mission__panel {
+      animation: mission-boot 520ms ease both;
+    }
+  }
+
+  @keyframes mission-boot {
+    0% {
+      opacity: 0;
+      filter: brightness(2.2) saturate(0.4);
+      transform: translateX(14px);
+    }
+    35% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+      filter: none;
+      transform: none;
+    }
+  }
+
+  :global([data-mode='immersive']) .mission {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  :global([data-mode='immersive']) .mission__tab,
+  :global([data-mode='immersive']) .mission.is-selected .mission__tab {
+    padding: 0;
+    border-left: 0;
+    background: none;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  :global([data-mode='immersive']) .mission__title,
+  :global([data-mode='immersive']) .mission.is-selected .mission__title {
+    font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+    color: var(--color-text);
+  }
+
+  :global([data-mode='immersive']) .mission__number,
+  :global([data-mode='immersive']) .mission.is-selected .mission__number {
+    color: var(--color-accent);
+  }
+
+  :global([data-mode='immersive']) .mission__panel {
+    display: grid;
+    padding: 0;
+    animation: none;
+  }
+
+  :global([data-mode='immersive']) .mission__screen {
+    display: none;
+  }
+</style>
