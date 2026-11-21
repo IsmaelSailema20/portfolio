@@ -1,45 +1,61 @@
 import { describe, expect, it } from 'vitest';
-import { buildMailtoUrl, composeMessageBody } from '../../src/interactions/contactForm';
+import { buildContactSubmission, isSuccessfulSubmission } from '../../src/interactions/contactForm';
 
-describe('composeMessageBody', () => {
-  it('signs the message with the sender name', () => {
-    expect(composeMessageBody({ name: 'Ana', subject: 'Hola', message: 'Me interesa tu perfil' })).toBe(
-      'Me interesa tu perfil\n\nAna',
-    );
+describe('buildContactSubmission', () => {
+  it('includes the access key, the sender label and the message fields', () => {
+    expect(
+      buildContactSubmission(
+        'access-key',
+        { name: 'Ana', email: 'ana@example.com', subject: 'Oferta', message: 'Hola' },
+        false,
+      ),
+    ).toEqual({
+      access_key: 'access-key',
+      from_name: 'Portafolio',
+      name: 'Ana',
+      email: 'ana@example.com',
+      subject: 'Oferta',
+      message: 'Hola',
+      botcheck: false,
+    });
   });
 
-  it('trims the message and the name', () => {
-    expect(composeMessageBody({ name: '  Ana  ', subject: '', message: '  Hola  ' })).toBe('Hola\n\nAna');
+  it('trims every field', () => {
+    expect(
+      buildContactSubmission(
+        'access-key',
+        { name: '  Ana  ', email: ' ana@example.com ', subject: '  Oferta ', message: '\n Hola \n' },
+        false,
+      ),
+    ).toMatchObject({ name: 'Ana', email: 'ana@example.com', subject: 'Oferta', message: 'Hola' });
   });
 
-  it('leaves the message unsigned without a name', () => {
-    expect(composeMessageBody({ name: '', subject: '', message: 'Hola' })).toBe('Hola');
-    expect(composeMessageBody({ name: '   ', subject: '', message: 'Hola' })).toBe('Hola');
+  it('flags submissions that filled the bot trap', () => {
+    expect(
+      buildContactSubmission('access-key', { name: '', email: '', subject: '', message: '' }, true)
+        .botcheck,
+    ).toBe(true);
   });
 });
 
-describe('buildMailtoUrl', () => {
-  it('addresses the recipient with the subject and the signed body', () => {
-    expect(
-      buildMailtoUrl('ismael@example.com', { name: 'Ana', subject: 'Oferta', message: 'Hola' }),
-    ).toBe('mailto:ismael@example.com?subject=Oferta&body=Hola%0A%0AAna');
+describe('isSuccessfulSubmission', () => {
+  it('accepts a successful response', () => {
+    expect(isSuccessfulSubmission({ success: true, message: 'Email sent successfully!' })).toBe(true);
   });
 
-  it('encodes spaces and reserved characters instead of using plus signs', () => {
-    expect(
-      buildMailtoUrl('ismael@example.com', {
-        name: '',
-        subject: 'Proyecto & equipo',
-        message: '¿Hablamos? 50% listo',
-      }),
-    ).toBe(
-      'mailto:ismael@example.com?subject=Proyecto%20%26%20equipo&body=%C2%BFHablamos%3F%2050%25%20listo',
-    );
+  it('rejects a failed response', () => {
+    expect(isSuccessfulSubmission({ success: false, message: 'Invalid access key' })).toBe(false);
   });
 
-  it('trims the subject', () => {
-    expect(buildMailtoUrl('ismael@example.com', { name: '', subject: '  Hola  ', message: 'Hola' })).toBe(
-      'mailto:ismael@example.com?subject=Hola&body=Hola',
-    );
+  it('rejects a success flag that is not a boolean', () => {
+    expect(isSuccessfulSubmission({ success: 'true' })).toBe(false);
+    expect(isSuccessfulSubmission({ success: 1 })).toBe(false);
+  });
+
+  it('rejects responses without a success flag', () => {
+    expect(isSuccessfulSubmission({})).toBe(false);
+    expect(isSuccessfulSubmission(null)).toBe(false);
+    expect(isSuccessfulSubmission(true)).toBe(false);
+    expect(isSuccessfulSubmission('success')).toBe(false);
   });
 });
