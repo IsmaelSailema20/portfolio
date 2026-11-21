@@ -7,40 +7,41 @@ import { ui } from '../../i18n/ui';
 interface Props {
   locale: Locale;
   profile: CollectionEntry<'profile'>['data'];
-  skillGroups: CollectionEntry<'skills'>[];
+  educationEntries: CollectionEntry<'education'>[];
 }
 
-const { locale, profile, skillGroups } = Astro.props;
+const { locale, profile, educationEntries } = Astro.props;
 const dictionary = ui[locale].about;
-const total = String(skillGroups.length).padStart(2, '0');
+const presentLabel = ui[locale].experience.present;
+const blockCount = 3;
 ---
 
 <SectionShell
   stageId="about"
   locale={locale}
   side="right"
-  itemCount={skillGroups.length}
-  stepCount={skillGroups.length}
+  itemCount={blockCount}
+  stepCount={blockCount}
 >
   <div class="about">
-    <div class="about__bio">
+    <div class="about-block about-block--objective" data-step>
+      <h3 class="label label--accent">{dictionary.objectiveTitle}</h3>
+      <p class="about-block__objective">{localize(profile.objective, locale)}</p>
+    </div>
+    <div class="about-block" data-step>
+      <h3 class="label">{dictionary.biographyTitle}</h3>
       {localize(profile.bio, locale).map((paragraph) => <p>{paragraph}</p>)}
     </div>
-    <div class="about__skills">
-      <h3 class="label about__skills-title">{dictionary.skillsTitle}</h3>
-      <ul>
+    <div class="about-block" data-step>
+      <h3 class="label">{dictionary.educationTitle}</h3>
+      <ul class="education-list">
         {
-          skillGroups.map((skillGroup, groupIndex) => (
-            <li class="skill-group" data-step>
-              <p class="skill-group__name">{localize(skillGroup.data.name, locale)}</p>
-              <p class="skill-group__description">
-                {localize(skillGroup.data.description, locale)}
-              </p>
-              <ul class="technology-list">
-                {skillGroup.data.items.map((item) => <li>{item}</li>)}
-              </ul>
-              <p class="label step-counter">
-                {String(groupIndex + 1).padStart(2, '0')} / {total}
+          educationEntries.map(({ data: education }) => (
+            <li class="education">
+              <p class="education__degree">{localize(education.degree, locale)}</p>
+              <p class="education__institution">{education.institution}</p>
+              <p class="label">
+                {education.start} — {education.end ?? presentLabel}
               </p>
             </li>
           ))
@@ -57,36 +58,47 @@ const total = String(skillGroups.length).padStart(2, '0');
     gap: var(--space-4) var(--space-5);
   }
 
-  .about__bio {
+  .about-block {
     display: grid;
     gap: var(--space-2);
     align-content: start;
     max-width: 58ch;
-  }
-
-  .about__skills-title {
-    margin-bottom: var(--space-2);
-    font-weight: 400;
-  }
-
-  .skill-group {
-    display: grid;
-    gap: 0.4rem;
-    padding-block: var(--space-2);
+    padding-top: var(--space-2);
     border-top: 1px solid var(--color-line);
     transition: border-color var(--transition);
   }
 
-  .skill-group:hover {
+  .about-block:hover {
     border-top-color: var(--color-accent);
   }
 
-  .skill-group__name {
+  .about-block--objective {
+    grid-column: 1 / -1;
+  }
+
+  .about-block__objective {
+    max-width: 48ch;
+    font-size: var(--text-lead);
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+
+  .education-list {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .education {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .education__degree {
     font-size: 1.15rem;
     font-weight: 600;
   }
 
-  .skill-group__description {
+  .education__institution {
     color: var(--color-muted);
   }
 </style>
