@@ -63,7 +63,21 @@ const swarmPanels = Array.from({ length: swarmPanelCount }, (_, panel) => {
     )
   }
   {
-    stageId === 'experience' && (
+    stageId === 'skills' && (
+      <g>
+        <ellipse class="dashed" cx="60" cy="62" rx="50" ry="44" />
+        <circle cx="60" cy="62" r="32" />
+        <circle cx="50" cy="78" r="5" />
+        <circle cx="76" cy="84" r="3" />
+        <circle cx="80" cy="50" r="3" />
+        <path d="M34 60 H48 M56 44 H70 M64 70 H78 M42 90 H54" />
+        <path class="accent" d="M36 60 a5 5 0 0 1 10 0 M58 44 a5 5 0 0 1 10 0 M66 70 a5 5 0 0 1 10 0 M44 90 a4 4 0 0 1 8 0" />
+        <circle class="accent filled" cx="60" cy="18" r="3" />
+      </g>
+    )
+  }
+  {
+    stageId === 'projects' && (
       <g>
         <path d="M22 28 l9 -4 l7 5 l-2 9 l-10 3 l-6 -6 z" />
         <path d="M82 92 l10 -3 l6 7 l-4 8 l-10 0 z" />
@@ -77,7 +91,7 @@ const swarmPanels = Array.from({ length: swarmPanelCount }, (_, panel) => {
     )
   }
   {
-    stageId === 'projects' && (
+    stageId === 'experience' && (
       <g>
         <circle class="dashed" cx="60" cy="60" r={swarmOrbitRadius} />
         <circle class="accent" cx="60" cy="60" r="12" />

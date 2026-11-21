@@ -117,14 +117,14 @@ export function createAsteroidBelt({ content, quality, palette }: StageOptions):
   }
 
   const stars: ConstellationStar[] = [];
-  for (let experienceIndex = 0; experienceIndex < content.experienceCount; experienceIndex += 1) {
-    const localProgress = resolveStepLocalProgress(experienceIndex, content.experienceCount);
+  for (let projectIndex = 0; projectIndex < content.projectCount; projectIndex += 1) {
+    const localProgress = resolveStepLocalProgress(projectIndex, content.projectCount);
     const routeFraction = clamp(
       (localProgress * waypoints.length - 0.5) / (waypoints.length - 1),
       0,
       1,
     );
-    const side = experienceIndex % 2 === 0 ? 1 : -1;
+    const side = projectIndex % 2 === 0 ? 1 : -1;
     const position = route
       .getPoint(routeFraction)
       .add(new Vector3(side * starSideOffset, starHeightOffset + side, starDepthOffset));
@@ -178,7 +178,7 @@ export function createAsteroidBelt({ content, quality, palette }: StageOptions):
   let activeStar = 0;
 
   return {
-    id: 'experience',
+    id: 'projects',
     group,
     waypoints,
     cameraOffset: new Vector3(0, 2.5, 15),

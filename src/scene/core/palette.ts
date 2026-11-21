@@ -11,6 +11,7 @@ const tokenNames = {
   hull: '--scene-hull',
   hullDark: '--scene-hull-dark',
   rock: '--scene-rock',
+  moon: '--scene-moon',
   snow: '--scene-snow',
   ocean: '--scene-ocean',
   land: '--scene-land',

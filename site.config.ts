@@ -1,4 +1,4 @@
-export const githubUser: string = 'usuario';
+export const githubUser: string = 'IsmaelSailema20';
 export const repositoryName: string = 'portfolio';
 
 const isUserSite = repositoryName === `${githubUser}.github.io`;

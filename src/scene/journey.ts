@@ -3,12 +3,14 @@ import type { Stage, StageFactory, StageOptions } from './core/types';
 import { createAsteroidBelt } from './stages/asteroidBelt';
 import { createDysonSwarm } from './stages/dysonSwarm';
 import { createLaunchBase } from './stages/launchBase';
+import { createMoon } from './stages/moon';
 import { createOrbitalStation } from './stages/orbitalStation';
 import { createWormhole } from './stages/wormhole';
 
 const stageFactories: StageFactory[] = [
   createLaunchBase,
   createOrbitalStation,
+  createMoon,
   createAsteroidBelt,
   createDysonSwarm,
   createWormhole,

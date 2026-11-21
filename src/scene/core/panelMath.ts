@@ -44,6 +44,33 @@ export function resolveStepLocalProgress(stepIndex: number, stepCount: number): 
   return stepRange[0] + ((stepIndex + 0.5) / stepCount) * (stepRange[1] - stepRange[0]);
 }
 
+export interface StepTarget {
+  stagePosition: number;
+  stepIndex: number | null;
+}
+
+export function resolveStepTarget(
+  stagePosition: number,
+  activeStep: number,
+  stepCounts: number[],
+  shift: number,
+): StepTarget | null {
+  const stepCount = stepCounts[stagePosition] ?? 0;
+  const targetStep = activeStep + shift;
+  if (stepCount > 0 && targetStep >= 0 && targetStep < stepCount) {
+    return { stagePosition, stepIndex: targetStep };
+  }
+  const targetStage = stagePosition + Math.sign(shift);
+  if (shift === 0 || targetStage < 0 || targetStage >= stepCounts.length) {
+    return null;
+  }
+  const targetStepCount = stepCounts[targetStage];
+  if (targetStepCount === 0) {
+    return { stagePosition: targetStage, stepIndex: null };
+  }
+  return { stagePosition: targetStage, stepIndex: shift > 0 ? 0 : targetStepCount - 1 };
+}
+
 export function resolveRouteFill(journeyPosition: number, stageCount: number): number {
   if (stageCount <= 1) {
     return 0;

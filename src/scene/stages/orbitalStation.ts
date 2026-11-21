@@ -95,8 +95,8 @@ export function createOrbitalStation({ content, palette }: StageOptions): Stage 
   const windowGeometry = new BoxGeometry(0.16, 1.3, 0.5);
   const finGeometry = new BoxGeometry(1.9, 0.05, 0.8);
 
-  for (let moduleIndex = 0; moduleIndex < content.skillGroupCount; moduleIndex += 1) {
-    const angle = (moduleIndex / content.skillGroupCount) * fullTurn;
+  for (let moduleIndex = 0; moduleIndex < content.aboutBlockCount; moduleIndex += 1) {
+    const angle = (moduleIndex / content.aboutBlockCount) * fullTurn;
     const glowMaterial = new MeshStandardMaterial({
       color: palette.color('hullDark'),
       emissive: palette.color('accent'),

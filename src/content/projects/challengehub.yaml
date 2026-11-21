@@ -1,0 +1,15 @@
+order: 2
+year: 2025
+category: contribution
+title:
+  es: ChallengeHub
+  en: ChallengeHub
+summary:
+  es: Plataforma web y móvil para crear, buscar y suscribirse a retos.
+  en: Web and mobile platform to create, search and subscribe to challenges.
+description:
+  es: Desarrollé pantallas de la versión web y de la app móvil, con suscripciones, comentarios y reacciones, además de endpoints en Spring Boot para buscar retos y creadores por categoría.
+  en: I built screens for the web version and the mobile app, with subscriptions, comments and reactions, plus Spring Boot endpoints to search challenges and creators by category.
+image: projects/challengehub.svg
+technologies: [React, React Native, Expo, Spring Boot, Auth0]
+repository: https://github.com/W1llAn/Frontend_ChallengeHub_Movile

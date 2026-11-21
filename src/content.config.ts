@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { projectCategories } from './i18n/ui';
 
 const localizedText = z.object({
   es: z.string().min(1),
@@ -22,6 +23,7 @@ const profile = defineCollection({
     email: z.email(),
     role: localizedText,
     tagline: localizedText,
+    objective: localizedText,
     bio: localizedParagraphs,
     links: z.array(
       z.object({
@@ -59,11 +61,22 @@ const experience = defineCollection({
   }),
 });
 
+const education = defineCollection({
+  loader: glob({ pattern: '*.yaml', base: './src/content/education' }),
+  schema: z.object({
+    institution: z.string().min(1),
+    degree: localizedText,
+    start: z.number().int(),
+    end: z.number().int().optional(),
+  }),
+});
+
 const projects = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/projects' }),
   schema: z.object({
     order: z.number().int(),
     year: z.number().int(),
+    category: z.enum(projectCategories),
     title: localizedText,
     summary: localizedText,
     description: localizedText,
@@ -74,4 +87,4 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { profile, skills, experience, projects };
+export const collections = { profile, skills, experience, education, projects };

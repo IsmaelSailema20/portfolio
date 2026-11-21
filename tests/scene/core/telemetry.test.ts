@@ -69,14 +69,22 @@ describe('resolveDistanceKilometers', () => {
     expect(resolveDistanceKilometers(0.875)).toBeCloseTo(Math.sqrt(409) - 1, 6);
   });
 
+  it('reaches the moon after the station', () => {
+    expect(resolveDistanceKilometers(2.5)).toBeCloseTo(384_400, 6);
+  });
+
+  it('interpolates between the station and the moon', () => {
+    expect(resolveDistanceKilometers(2)).toBeCloseTo(Math.sqrt(409 * 384_401) - 1, 4);
+  });
+
   it('reaches the asteroid belt and the nearest star', () => {
-    expect(resolveDistanceKilometers(2.5) / kilometersPerAstronomicalUnit).toBeCloseTo(2.8, 6);
-    expect(resolveDistanceKilometers(3.5) / kilometersPerLightYear).toBeCloseTo(4.2, 6);
+    expect(resolveDistanceKilometers(3.5) / kilometersPerAstronomicalUnit).toBeCloseTo(2.8, 6);
+    expect(resolveDistanceKilometers(4.5) / kilometersPerLightYear).toBeCloseTo(4.2, 6);
   });
 
   it('ends at the wormhole distance', () => {
-    expect(resolveDistanceKilometers(5)).toBe(26_000 * kilometersPerLightYear);
     expect(resolveDistanceKilometers(6)).toBe(26_000 * kilometersPerLightYear);
+    expect(resolveDistanceKilometers(7)).toBe(26_000 * kilometersPerLightYear);
   });
 });
 
@@ -84,6 +92,10 @@ describe('formatDistance', () => {
   it('formats short distances in kilometers', () => {
     expect(formatDistance(408, 'es')).toBe('408 km');
     expect(formatDistance(407.6, 'en')).toBe('408 km');
+  });
+
+  it('keeps the moon distance in kilometers', () => {
+    expect(formatDistance(384_400, 'es')).toBe('384.400 km');
   });
 
   it('groups thousands per locale', () => {
