@@ -1,14 +1,5 @@
 import type { ModeController } from './modeController';
 
-function triggerDownload(source: HTMLAnchorElement): void {
-  const temporaryLink = document.createElement('a');
-  temporaryLink.href = source.href;
-  temporaryLink.download = source.download;
-  document.body.append(temporaryLink);
-  temporaryLink.click();
-  temporaryLink.remove();
-}
-
 function isPlainClick(event: MouseEvent): boolean {
   return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
 }
@@ -39,7 +30,6 @@ export function initializeWarpLinks(modeController: ModeController): void {
     }
   }
 
-  bindFlash('[data-curriculum-link]', triggerDownload);
   bindFlash('[data-warp-link]', (link) => window.location.assign(link.href));
 
   for (const button of document.querySelectorAll<HTMLButtonElement>('[data-wormhole-jump]')) {

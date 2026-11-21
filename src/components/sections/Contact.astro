@@ -1,8 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import SectionShell from '../ui/SectionShell.astro';
-import { localize, type Locale } from '../../i18n/locales';
-import { joinBasePath } from '../../i18n/paths';
+import type { Locale } from '../../i18n/locales';
 import { ui } from '../../i18n/ui';
 import { contactFormAccessKey } from '../../../site.config';
 
@@ -13,7 +12,6 @@ interface Props {
 
 const { locale, profile } = Astro.props;
 const dictionary = ui[locale].contact;
-const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.curriculum, locale));
 ---
 
 <SectionShell stageId="contact" locale={locale} side="left">
@@ -74,12 +72,8 @@ const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.c
     <p class="contact-form__status" role="status" data-contact-status></p>
   </form>
   <div class="contact__actions">
-    <a class="button" href={curriculumPath} download data-curriculum-link data-magnetic>
-      {dictionary.downloadCurriculum} ↓
-    </a>
-    <button class="button button--quiet" type="button" data-wormhole-jump data-magnetic>
-      <span class="only-immersive">{dictionary.crossWormhole} →</span>
-      <span class="only-classic">{dictionary.backToStart} ↑</span>
+    <button class="button" type="button" data-wormhole-jump data-magnetic>
+      {dictionary.crossWormhole} →
     </button>
   </div>
 </SectionShell>

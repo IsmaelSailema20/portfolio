@@ -32,7 +32,6 @@ const profile = defineCollection({
         url: z.url(),
       }),
     ),
-    curriculum: localizedText,
     portrait: z.string().min(1).optional(),
   }),
 });

@@ -73,12 +73,10 @@ export interface UiDictionary {
     messageLabel: string;
     send: string;
     formHint: string;
-    downloadCurriculum: string;
     sending: string;
     success: string;
     failure: string;
     crossWormhole: string;
-    backToStart: string;
   };
   footer: {
     madeIn: string;
@@ -184,9 +182,7 @@ export const ui: Record<Locale, UiDictionary> = {
       sending: 'Enviando transmisión…',
       success: 'Mensaje recibido. Te responderé pronto.',
       failure: 'No se pudo enviar. Inténtalo de nuevo o escríbeme al correo.',
-      downloadCurriculum: 'Descargar CV',
-      crossWormhole: 'Atravesar el agujero',
-      backToStart: 'Volver al inicio',
+      crossWormhole: 'Atravesar el agujero de gusano',
     },
     footer: {
       madeIn: 'Hecho en Ambato, Ecuador',
@@ -290,9 +286,7 @@ export const ui: Record<Locale, UiDictionary> = {
       sending: 'Sending transmission…',
       success: 'Message received. I will get back to you soon.',
       failure: 'The message could not be sent. Try again or email me directly.',
-      downloadCurriculum: 'Download CV',
       crossWormhole: 'Cross the wormhole',
-      backToStart: 'Back to start',
     },
     footer: {
       madeIn: 'Made in Ambato, Ecuador',
