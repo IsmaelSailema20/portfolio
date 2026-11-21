@@ -76,7 +76,9 @@ const navigationStages = stageIds.filter((stageId) => stageId !== 'home');
             {
               navigationStages.map((stageId) => (
                 <li>
-                  <a href={`#${stageId}`}>{dictionary.navigationItems[stageId]}</a>
+                  <a href={`#${stageId}`} data-section-link={stageId}>
+                    {dictionary.navigationItems[stageId]}
+                  </a>
                 </li>
               ))
             }
@@ -131,6 +133,7 @@ const navigationStages = stageIds.filter((stageId) => stageId !== 'home');
       import { readMissionNumber, renderMissionNumber } from '../interactions/mission';
       import { initializeModeController } from '../interactions/modeController';
       import { initializeProjectGalleries } from '../interactions/projectGallery';
+      import { initializeSectionNavigation } from '../interactions/sectionNavigation';
       import { initializeWarpLinks } from '../interactions/warpLinks';
 
       const modeController = initializeModeController();
@@ -140,6 +143,7 @@ const navigationStages = stageIds.filter((stageId) => stageId !== 'home');
       initializeDetailToggles();
       initializeMissionSelectors();
       initializeProjectGalleries();
+      initializeSectionNavigation();
       renderMissionNumber(readMissionNumber());
     </script>
   </body>
@@ -179,8 +183,10 @@ const navigationStages = stageIds.filter((stageId) => stageId !== 'home');
   }
 
   .site-header__navigation a {
+    position: relative;
     color: var(--color-muted);
     text-decoration: none;
+    transition: color var(--transition);
   }
 
   :global([data-mode='immersive']) .site-header__navigation {
@@ -189,6 +195,27 @@ const navigationStages = stageIds.filter((stageId) => stageId !== 'home');
 
   .site-header__navigation a:hover {
     color: var(--color-interactive);
+  }
+
+  .site-header__navigation a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.45rem;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transition: transform var(--transition);
+  }
+
+  .site-header__navigation a.is-current {
+    color: var(--color-accent);
+  }
+
+  .site-header__navigation a.is-current::after {
+    transform: scaleX(1);
   }
 
   .site-header__controls {
