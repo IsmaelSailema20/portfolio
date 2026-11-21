@@ -1,0 +1,15 @@
+order: 3
+year: 2025
+category: contribution
+title:
+  es: HuellitaSoft
+  en: HuellitaSoft
+summary:
+  es: Sistema de gestión para clínicas veterinarias con versión web, app móvil y API.
+  en: Management system for veterinary clinics with a web version, a mobile app and an API.
+description:
+  es: Trabajé en la API con Spring Boot, en el panel web para administradores y veterinarios y en la app móvil donde los clientes agendan citas y consultan a sus mascotas.
+  en: I worked on the Spring Boot API, the web dashboard for admins and vets and the mobile app where customers book appointments and check on their pets.
+image: projects/huellitasoft.svg
+technologies: [Spring Boot, React, TypeScript, React Native, Auth0]
+repository: https://github.com/W1llAn/Backend_Huellitasoft

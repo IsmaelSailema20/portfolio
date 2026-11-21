@@ -1,0 +1,15 @@
+order: 1
+year: 2026
+category: personal
+title:
+  es: Yapa Go
+  en: Yapa Go
+summary:
+  es: Plataforma donde los comercios publican packs y los clientes los reservan desde un mapa.
+  en: Platform where shops publish packs and customers reserve them from a map.
+description:
+  es: Tiene paneles separados para comercio y cliente, gestión de packs y reservas, reportes con gráficos, notificaciones y autenticación con Supabase.
+  en: It has separate dashboards for shops and customers, pack and reservation management, chart reports, notifications and Supabase authentication.
+image: projects/yapa-go.svg
+technologies: [Next.js, TypeScript, Supabase, Leaflet, Tailwind CSS]
+repository: https://github.com/IsmaelSailema20/Yapa-go

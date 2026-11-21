@@ -1,0 +1,16 @@
+order: 2
+year: 2025
+category: personal
+title:
+  es: Gestión de seguros
+  en: Insurance management
+summary:
+  es: Aplicación web para administrar clientes, contratos, pagos y reembolsos de seguros.
+  en: Web application to manage insurance customers, contracts, payments and refunds.
+description:
+  es: Incluye formularios de clientes y beneficiarios, carga y vista previa de documentos PDF, tablas de pagos, estadísticas y rutas protegidas con JWT, con pruebas unitarias de los componentes.
+  en: It includes customer and beneficiary forms, PDF upload and preview, payment tables, statistics and JWT protected routes, with unit tests for the components.
+image: projects/gestion-seguros.svg
+technologies: [React, Vite, PrimeReact, Chart.js, JWT]
+repository: https://github.com/IsmaelSailema20/GestionSegurosFrontend
+demo: https://gestion-seguros-frontend.vercel.app

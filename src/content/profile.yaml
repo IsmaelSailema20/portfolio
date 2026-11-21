@@ -1,26 +1,29 @@
 name: Ismael Sailema
-location: Quito, Ecuador
-email: correo@ejemplo.com
+location: Ambato, Ecuador
+email: ismaelsailema110@gmail.com
 role:
   es: Desarrollador de Software
   en: Software Developer
 tagline:
-  es: Construyo servicios backend claros, medibles y fáciles de mantener, desde la mitad del mundo.
-  en: I build backend services that are clear, measurable and easy to maintain, from the middle of the world.
+  es: Construyo software que marca la diferencia, del backend a la interfaz, desde el centro del Ecuador.
+  en: I build software that makes a difference, from the backend to the interface, from the heart of Ecuador.
+objective:
+  es: Crecer como desarrollador backend construyendo servicios seguros, probados y fáciles de mantener, y aportar a equipos que valoren el código limpio, la arquitectura sólida y las metodologías ágiles.
+  en: Grow as a backend developer by building secure, tested and maintainable services, and contribute to teams that value clean code, solid architecture and agile methodologies.
 bio:
   es:
-    - Soy desarrollador de software con base en Quito. Me dedico sobre todo al backend, a diseñar APIs y a dejar los sistemas mejor de lo que los encontré.
-    - Me interesa entender el problema antes de escribir código, medir antes de optimizar y automatizar lo que se repite. Fuera del trabajo programo minijuegos y miro el cielo cada vez que está despejado.
+    - Soy estudiante de Ingeniería en Software en la Universidad Técnica de Ambato y desarrollador backend en Firma Segura, donde trabajo con Java y Spring Boot en microservicios. También construyo interfaces con React y TypeScript cuando el producto lo necesita.
+    - Busco soluciones que combinen código limpio, arquitectura sólida y una buena experiencia de usuario. Fuera del código disfruto los videojuegos, la ciencia ficción, la naturaleza y la música para concentrarme.
   en:
-    - I am a software developer based in Quito. I work mostly on the backend, designing APIs and leaving systems better than I found them.
-    - I like to understand the problem before writing code, measure before optimizing and automate whatever repeats. Outside of work I build small games and look at the sky whenever it is clear.
+    - I am a Software Engineering student at Universidad Técnica de Ambato and a backend developer at Firma Segura, where I work with Java and Spring Boot on microservices. I also build interfaces with React and TypeScript when the product needs it.
+    - I look for solutions that combine clean code, solid architecture and a good user experience. Outside of code I enjoy video games, science fiction, nature and music to focus.
 links:
   - kind: github
     label: GitHub
-    url: https://github.com/usuario
+    url: https://github.com/IsmaelSailema20
   - kind: linkedin
     label: LinkedIn
-    url: https://www.linkedin.com/in/usuario
+    url: https://www.linkedin.com/in/ismael-sailema-a04089287
 curriculum:
   es: cv/cv-es.pdf
   en: cv/cv-en.pdf

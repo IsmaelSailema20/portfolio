@@ -1,0 +1,16 @@
+company: Firma Segura
+start: 2026-09
+role:
+  es: Desarrollador Backend
+  en: Backend Developer
+summary:
+  es: Desarrollo microservicios en Java para una plataforma de firma electrónica, con solicitudes de firma, identidad y permisos, pagos, notificaciones por correo y validación de certificados.
+  en: I build Java microservices for an electronic signature platform, covering signature requests, identity and permissions, payments, email notifications and certificate validation.
+challenge:
+  problem:
+    es: La plataforma necesitaba controlar qué puede hacer cada usuario en servicios distintos, desde los pagos hasta el panel de administración.
+    en: The platform needed to control what each user can do across different services, from payments to the admin panel.
+  approach:
+    es: Implementé roles y permisos en el servicio de identidad con borrado lógico y bloqueo optimista, los enruté por el API Gateway y exigí permisos específicos en el servicio de pagos y en el panel de administración, con pruebas de integración contra PostgreSQL.
+    en: I implemented roles and permissions in the identity service with soft deletion and optimistic locking, routed them through the API Gateway and required specific permissions in the payments service and the admin panel, with integration tests against PostgreSQL.
+technologies: [Java, Spring Boot, Spring Cloud Gateway, gRPC, OAuth2, PostgreSQL, AWS SES]
