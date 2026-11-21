@@ -1,0 +1,64 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionShell from '../ui/SectionShell.astro';
+import { localize, type Locale } from '../../i18n/locales';
+
+interface Props {
+  locale: Locale;
+  skillGroups: CollectionEntry<'skills'>[];
+}
+
+const { locale, skillGroups } = Astro.props;
+---
+
+<SectionShell
+  stageId="skills"
+  locale={locale}
+  side="left"
+  itemCount={skillGroups.length}
+  stepCount={skillGroups.length}
+>
+  <ul class="skill-groups">
+    {
+      skillGroups.map((skillGroup) => (
+        <li class="skill-group" data-step>
+          <p class="skill-group__name">{localize(skillGroup.data.name, locale)}</p>
+          <p class="skill-group__description">{localize(skillGroup.data.description, locale)}</p>
+          <ul class="technology-list">
+            {skillGroup.data.items.map((item) => <li>{item}</li>)}
+          </ul>
+        </li>
+      ))
+    }
+  </ul>
+</SectionShell>
+
+<style>
+  .skill-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    gap: 0 var(--space-5);
+  }
+
+  .skill-group {
+    display: grid;
+    align-content: start;
+    gap: 0.4rem;
+    padding-block: var(--space-2);
+    border-top: 1px solid var(--color-line);
+    transition: border-color var(--transition);
+  }
+
+  .skill-group:hover {
+    border-top-color: var(--color-accent);
+  }
+
+  .skill-group__name {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .skill-group__description {
+    color: var(--color-muted);
+  }
+</style>

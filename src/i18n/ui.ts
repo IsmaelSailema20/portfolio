@@ -1,8 +1,12 @@
 import type { Locale } from './locales';
 
-export const stageIds = ['home', 'about', 'experience', 'projects', 'contact'] as const;
+export const stageIds = ['home', 'about', 'skills', 'projects', 'experience', 'contact'] as const;
 
 export type StageId = (typeof stageIds)[number];
+
+export const projectCategories = ['personal', 'contribution', 'client'] as const;
+
+export type ProjectCategory = (typeof projectCategories)[number];
 
 export interface UiDictionary {
   siteDescription: string;
@@ -21,27 +25,46 @@ export interface UiDictionary {
     classic: string;
   };
   languageSwitchLabel: string;
+  stepNavigation: {
+    label: string;
+    previous: string;
+    next: string;
+    goTo: string;
+  };
+  detail: {
+    show: string;
+    hide: string;
+  };
   hero: {
     telemetry: string;
     callToAction: string;
     scrollHint: string;
   };
   about: {
-    skillsTitle: string;
+    objectiveTitle: string;
+    biographyTitle: string;
+    educationTitle: string;
   };
   experience: {
     present: string;
     problem: string;
     approach: string;
-    manualControlHint: string;
   };
   projects: {
     repository: string;
     demo: string;
+    manualControlHint: string;
+    categories: Record<ProjectCategory, string>;
   };
   contact: {
     lead: string;
     email: string;
+    formTitle: string;
+    nameLabel: string;
+    subjectLabel: string;
+    messageLabel: string;
+    send: string;
+    formHint: string;
     downloadCurriculum: string;
     crossWormhole: string;
     backToStart: string;
@@ -70,20 +93,23 @@ export const ui: Record<Locale, UiDictionary> = {
     stageNames: {
       home: 'Base de lanzamiento',
       about: 'Estación orbital',
-      experience: 'Cinturón de asteroides',
-      projects: 'Enjambre de Dyson',
+      skills: 'Base lunar',
+      projects: 'Cinturón de asteroides',
+      experience: 'Enjambre de Dyson',
       contact: 'Agujero de gusano',
     },
     sectionTitles: {
       about: 'Sobre mí',
-      experience: 'Experiencia',
+      skills: 'Tecnologías',
       projects: 'Proyectos',
+      experience: 'Experiencia',
       contact: '¿Listo para saltar a una nueva galaxia juntos?',
     },
     navigationItems: {
       about: 'Sobre mí',
-      experience: 'Experiencia',
+      skills: 'Tecnologías',
       projects: 'Proyectos',
+      experience: 'Experiencia',
       contact: 'Contacto',
     },
     mode: {
@@ -92,34 +118,57 @@ export const ui: Record<Locale, UiDictionary> = {
       classic: 'Clásico',
     },
     languageSwitchLabel: 'Read in English',
+    stepNavigation: {
+      label: 'Navegar entre elementos',
+      previous: 'Anterior',
+      next: 'Siguiente',
+      goTo: 'Ir al elemento',
+    },
+    detail: {
+      show: 'Ver detalle',
+      hide: 'Ocultar detalle',
+    },
     hero: {
       telemetry: 'LAT 0° 0′ 0″ · Mitad del Mundo',
       callToAction: 'Inicia la misión',
       scrollHint: 'Scroll para despegar',
     },
     about: {
-      skillsTitle: 'Tecnologías',
+      objectiveTitle: 'Objetivo profesional',
+      biographyTitle: 'Quién soy',
+      educationTitle: 'Formación',
     },
     experience: {
       present: 'Actualidad',
       problem: 'Desafío',
       approach: 'Enfoque',
-      manualControlHint: 'Espacio · control manual',
     },
     projects: {
       repository: 'Código',
       demo: 'Demo',
+      manualControlHint: 'Espacio · control manual',
+      categories: {
+        personal: 'Proyecto personal',
+        contribution: 'Colaboración',
+        client: 'Cliente',
+      },
     },
     contact: {
       lead: 'Escríbeme o revisa mi trabajo. Respondo en español e inglés.',
       email: 'Correo',
+      formTitle: 'Envíame un mensaje',
+      nameLabel: 'Nombre',
+      subjectLabel: 'Asunto',
+      messageLabel: 'Mensaje',
+      send: 'Enviar mensaje',
+      formHint: 'Se abrirá tu aplicación de correo con el mensaje listo para enviar.',
       downloadCurriculum: 'Descargar CV',
       crossWormhole: 'Atravesar el agujero',
       backToStart: 'Volver al inicio',
     },
     footer: {
-      madeIn: 'Hecho en Quito, Ecuador',
-      coordinates: '0° 13′ S · 78° 30′ O',
+      madeIn: 'Hecho en Ambato, Ecuador',
+      coordinates: '1° 15′ S · 78° 37′ O',
     },
     minigame: {
       title: 'Control manual',
@@ -139,20 +188,23 @@ export const ui: Record<Locale, UiDictionary> = {
     stageNames: {
       home: 'Launch base',
       about: 'Orbital station',
-      experience: 'Asteroid belt',
-      projects: 'Dyson swarm',
+      skills: 'Lunar base',
+      projects: 'Asteroid belt',
+      experience: 'Dyson swarm',
       contact: 'Wormhole',
     },
     sectionTitles: {
       about: 'About me',
-      experience: 'Experience',
+      skills: 'Technologies',
       projects: 'Projects',
+      experience: 'Experience',
       contact: 'Ready to jump to a new galaxy together?',
     },
     navigationItems: {
       about: 'About',
-      experience: 'Experience',
+      skills: 'Skills',
       projects: 'Projects',
+      experience: 'Experience',
       contact: 'Contact',
     },
     mode: {
@@ -161,34 +213,57 @@ export const ui: Record<Locale, UiDictionary> = {
       classic: 'Classic',
     },
     languageSwitchLabel: 'Leer en español',
+    stepNavigation: {
+      label: 'Browse items',
+      previous: 'Previous',
+      next: 'Next',
+      goTo: 'Go to item',
+    },
+    detail: {
+      show: 'Show details',
+      hide: 'Hide details',
+    },
     hero: {
       telemetry: 'LAT 0° 0′ 0″ · Middle of the World',
       callToAction: 'Start the mission',
       scrollHint: 'Scroll to lift off',
     },
     about: {
-      skillsTitle: 'Technologies',
+      objectiveTitle: 'Career goal',
+      biographyTitle: 'Who I am',
+      educationTitle: 'Education',
     },
     experience: {
       present: 'Present',
       problem: 'Challenge',
       approach: 'Approach',
-      manualControlHint: 'Space · manual control',
     },
     projects: {
       repository: 'Code',
       demo: 'Demo',
+      manualControlHint: 'Space · manual control',
+      categories: {
+        personal: 'Personal project',
+        contribution: 'Contribution',
+        client: 'Client',
+      },
     },
     contact: {
       lead: 'Write to me or take a look at my work. I reply in Spanish and English.',
       email: 'Email',
+      formTitle: 'Send me a message',
+      nameLabel: 'Name',
+      subjectLabel: 'Subject',
+      messageLabel: 'Message',
+      send: 'Send message',
+      formHint: 'Your email app will open with the message ready to send.',
       downloadCurriculum: 'Download CV',
       crossWormhole: 'Cross the wormhole',
       backToStart: 'Back to start',
     },
     footer: {
-      madeIn: 'Made in Quito, Ecuador',
-      coordinates: '0° 13′ S · 78° 30′ W',
+      madeIn: 'Made in Ambato, Ecuador',
+      coordinates: '1° 15′ S · 78° 37′ W',
     },
     minigame: {
       title: 'Manual control',

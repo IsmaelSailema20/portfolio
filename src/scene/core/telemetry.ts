@@ -18,9 +18,10 @@ interface DistanceKeyframe {
 const distanceKeyframes: DistanceKeyframe[] = [
   { position: liftoffPosition, kilometers: 0 },
   { position: 1.5, kilometers: 408 },
-  { position: 2.5, kilometers: 2.8 * kilometersPerAstronomicalUnit },
-  { position: 3.5, kilometers: 4.2 * kilometersPerLightYear },
-  { position: 5, kilometers: 26_000 * kilometersPerLightYear },
+  { position: 2.5, kilometers: 384_400 },
+  { position: 3.5, kilometers: 2.8 * kilometersPerAstronomicalUnit },
+  { position: 4.5, kilometers: 4.2 * kilometersPerLightYear },
+  { position: 6, kilometers: 26_000 * kilometersPerLightYear },
 ];
 
 const unitLabels: Record<Locale, { astronomicalUnit: string; lightYear: string }> = {
