@@ -1,9 +1,9 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import DetailToggle from './DetailToggle.astro';
+import ProjectGallery from './ProjectGallery.astro';
 import TechHologram from './TechHologram.astro';
 import { localize, type Locale } from '../../i18n/locales';
-import { joinBasePath } from '../../i18n/paths';
 import { ui } from '../../i18n/ui';
 
 interface Props {
@@ -47,17 +47,9 @@ const links = [
   </button>
   <div class="mission__panel" id={panelId}>
     {
-      project.data.image && (
-        <div class="mission__screen">
-          <img
-            class="mission__image"
-            src={joinBasePath(import.meta.env.BASE_URL, project.data.image)}
-            alt={title}
-            width="640"
-            height="400"
-            loading="lazy"
-            decoding="async"
-          />
+      project.data.images && (
+        <div class="mission__gallery">
+          <ProjectGallery locale={locale} title={title} images={project.data.images} />
         </div>
       )
     }
@@ -158,33 +150,8 @@ const links = [
     display: grid;
   }
 
-  .mission__screen {
-    position: relative;
+  .mission__gallery {
     margin-bottom: var(--space-1);
-    border: 1px solid rgb(111 214 232 / 0.35);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow:
-      0 0 48px rgb(111 214 232 / 0.14),
-      0 24px 40px -24px rgb(111 214 232 / 0.45);
-  }
-
-  .mission__screen::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(rgb(111 214 232 / 0.1), transparent 30%, transparent 70%, rgb(111 214 232 / 0.12)),
-      repeating-linear-gradient(to bottom, rgb(7 11 20 / 0.28) 0 1px, transparent 1px 4px);
-    pointer-events: none;
-  }
-
-  .mission__image {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
   }
 
   .mission__summary {
@@ -224,11 +191,6 @@ const links = [
       grid-column: 2;
       grid-row: 1 / -1;
       padding: 0;
-    }
-
-    .mission__screen {
-      transform: perspective(1400px) rotateY(-5deg);
-      transform-origin: left center;
     }
   }
 
@@ -285,7 +247,7 @@ const links = [
     animation: none;
   }
 
-  :global([data-mode='immersive']) .mission__screen {
+  :global([data-mode='immersive']) .mission__gallery {
     display: none;
   }
 </style>

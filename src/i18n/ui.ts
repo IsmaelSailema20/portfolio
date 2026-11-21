@@ -56,6 +56,12 @@ export interface UiDictionary {
     demo: string;
     manualControlHint: string;
     categories: Record<ProjectCategory, string>;
+    gallery: {
+      label: string;
+      previous: string;
+      next: string;
+      goTo: string;
+    };
   };
   contact: {
     lead: string;
@@ -154,6 +160,12 @@ export const ui: Record<Locale, UiDictionary> = {
         contribution: 'Colaboración',
         client: 'Cliente',
       },
+      gallery: {
+        label: 'Capturas de',
+        previous: 'Imagen anterior',
+        next: 'Imagen siguiente',
+        goTo: 'Ver imagen',
+      },
     },
     contact: {
       lead: 'Escríbeme o revisa mi trabajo. Respondo en español e inglés.',
@@ -249,6 +261,12 @@ export const ui: Record<Locale, UiDictionary> = {
         personal: 'Personal project',
         contribution: 'Contribution',
         client: 'Client',
+      },
+      gallery: {
+        label: 'Screenshots of',
+        previous: 'Previous image',
+        next: 'Next image',
+        goTo: 'Show image',
       },
     },
     contact: {

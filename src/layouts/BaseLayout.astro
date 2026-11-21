@@ -130,6 +130,7 @@ const navigationStages = stageIds.filter((stageId) => stageId !== 'home');
       import { initializeMissionSelectors } from '../interactions/missionSelector';
       import { readMissionNumber, renderMissionNumber } from '../interactions/mission';
       import { initializeModeController } from '../interactions/modeController';
+      import { initializeProjectGalleries } from '../interactions/projectGallery';
       import { initializeWarpLinks } from '../interactions/warpLinks';
 
       const modeController = initializeModeController();
@@ -138,6 +139,7 @@ const navigationStages = stageIds.filter((stageId) => stageId !== 'home');
       initializeContactForms();
       initializeDetailToggles();
       initializeMissionSelectors();
+      initializeProjectGalleries();
       renderMissionNumber(readMissionNumber());
     </script>
   </body>

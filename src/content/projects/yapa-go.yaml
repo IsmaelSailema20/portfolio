@@ -10,6 +10,22 @@ summary:
 description:
   es: Tiene paneles separados para comercio y cliente, gestión de packs y reservas, reportes con gráficos, notificaciones y autenticación con Supabase.
   en: It has separate dashboards for shops and customers, pack and reservation management, chart reports, notifications and Supabase authentication.
-image: projects/yapa-go.svg
+images:
+  - source: projects/yapa-go/01-portada.webp
+    caption:
+      es: Portada de la plataforma
+      en: Platform overview
+  - source: projects/yapa-go/02-cliente.webp
+    caption:
+      es: Experiencia del cliente
+      en: Customer experience
+  - source: projects/yapa-go/03-comercio.webp
+    caption:
+      es: Panel del comercio
+      en: Shop dashboard
+  - source: projects/yapa-go/04-registro.webp
+    caption:
+      es: Registro por rol
+      en: Role-based sign-up
 technologies: [Next.js, TypeScript, Supabase, Leaflet, Tailwind CSS]
 repository: https://github.com/IsmaelSailema20/Yapa-go

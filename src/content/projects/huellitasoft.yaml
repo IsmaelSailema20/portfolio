@@ -10,6 +10,22 @@ summary:
 description:
   es: Trabajé en la API con Spring Boot, en el panel web para administradores y veterinarios y en la app móvil donde los clientes agendan citas y consultan a sus mascotas.
   en: I worked on the Spring Boot API, the web dashboard for admins and vets and the mobile app where customers book appointments and check on their pets.
-image: projects/huellitasoft.svg
+images:
+  - source: projects/huellitasoft/01-portada.webp
+    caption:
+      es: Portada de la plataforma
+      en: Platform overview
+  - source: projects/huellitasoft/02-admin.webp
+    caption:
+      es: Panel de administración
+      en: Admin dashboard
+  - source: projects/huellitasoft/03-clinica.webp
+    caption:
+      es: Historia clínica y dashboard
+      en: Medical records and dashboard
+  - source: projects/huellitasoft/04-movil.webp
+    caption:
+      es: App móvil para dueños
+      en: Mobile app for pet owners
 technologies: [Spring Boot, React, TypeScript, React Native, Auth0]
 repository: https://github.com/W1llAn/Backend_Huellitasoft

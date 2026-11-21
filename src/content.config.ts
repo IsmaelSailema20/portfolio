@@ -82,7 +82,15 @@ const projects = defineCollection({
     summary: localizedText,
     description: localizedText,
     technologies: z.array(z.string().min(1)),
-    image: z.string().min(1).optional(),
+    images: z
+      .array(
+        z.object({
+          source: z.string().min(1),
+          caption: localizedText,
+        }),
+      )
+      .min(1)
+      .optional(),
     repository: z.url().optional(),
     demo: z.url().optional(),
   }),

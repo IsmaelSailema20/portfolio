@@ -10,7 +10,19 @@ summary:
 description:
   es: Incluye formularios de clientes y beneficiarios, carga y vista previa de documentos PDF, tablas de pagos, estadísticas y rutas protegidas con JWT, con pruebas unitarias de los componentes.
   en: It includes customer and beneficiary forms, PDF upload and preview, payment tables, statistics and JWT protected routes, with unit tests for the components.
-image: projects/gestion-seguros.svg
+images:
+  - source: projects/gestion-seguros/01-portada.webp
+    caption:
+      es: Inicio de sesión y portal del cliente
+      en: Login and customer portal
+  - source: projects/gestion-seguros/02-paneles.webp
+    caption:
+      es: Paneles por rol
+      en: Role-based dashboards
+  - source: projects/gestion-seguros/03-contrato.webp
+    caption:
+      es: Contratos en PDF
+      en: PDF contracts
 technologies: [React, Vite, PrimeReact, Chart.js, JWT]
 repository: https://github.com/IsmaelSailema20/GestionSegurosFrontend
 demo: https://gestion-seguros-frontend.vercel.app
