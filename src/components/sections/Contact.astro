@@ -33,6 +33,25 @@ const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.c
       ))
     }
   </ul>
+  <form class="contact-form" data-contact-form data-recipient={profile.email}>
+    <h3 class="label label--accent">{dictionary.formTitle}</h3>
+    <label class="contact-form__field">
+      <span class="label">{dictionary.nameLabel}</span>
+      <input type="text" name="name" autocomplete="name" required />
+    </label>
+    <label class="contact-form__field">
+      <span class="label">{dictionary.subjectLabel}</span>
+      <input type="text" name="subject" required />
+    </label>
+    <label class="contact-form__field">
+      <span class="label">{dictionary.messageLabel}</span>
+      <textarea name="message" rows="5" required></textarea>
+    </label>
+    <div class="contact-form__footer">
+      <button class="button" type="submit" data-magnetic>{dictionary.send} →</button>
+      <p class="contact-form__hint">{dictionary.formHint}</p>
+    </div>
+  </form>
   <div class="contact__actions">
     <a class="button" href={curriculumPath} download data-curriculum-link data-magnetic>
       {dictionary.downloadCurriculum} ↓
@@ -65,6 +84,54 @@ const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.c
     gap: var(--space-1) var(--space-3);
     padding-block: var(--space-2);
     border-top: 1px solid var(--color-line);
+  }
+
+  .contact-form {
+    display: grid;
+    gap: var(--space-2);
+    max-width: 36rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .contact-form__field {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .contact-form__field input,
+  .contact-form__field textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font: inherit;
+    transition: border-color var(--transition);
+  }
+
+  .contact-form__field textarea {
+    resize: vertical;
+  }
+
+  .contact-form__field input:hover,
+  .contact-form__field textarea:hover,
+  .contact-form__field input:focus,
+  .contact-form__field textarea:focus {
+    border-color: var(--color-accent);
+  }
+
+  .contact-form__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .contact-form__hint {
+    max-width: 30ch;
+    font-size: var(--text-small);
+    color: var(--color-muted);
   }
 
   .contact__actions {

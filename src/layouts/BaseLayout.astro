@@ -124,6 +124,8 @@ const navigationStages = stageIds.filter((stageId) => stageId !== 'home');
     <div class="warp-flash" data-warp-flash aria-hidden="true"></div>
 
     <script>
+      import { initializeContactForms } from '../interactions/contactForm';
+      import { initializeDetailToggles } from '../interactions/detailToggles';
       import { initializeMagneticElements } from '../interactions/magnetic';
       import { readMissionNumber, renderMissionNumber } from '../interactions/mission';
       import { initializeModeController } from '../interactions/modeController';
@@ -132,6 +134,8 @@ const navigationStages = stageIds.filter((stageId) => stageId !== 'home');
       const modeController = initializeModeController();
       initializeWarpLinks(modeController);
       initializeMagneticElements();
+      initializeContactForms();
+      initializeDetailToggles();
       renderMissionNumber(readMissionNumber());
     </script>
   </body>
