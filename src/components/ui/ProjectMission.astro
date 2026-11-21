@@ -34,7 +34,7 @@ const links = [
     class="mission__tab"
     type="button"
     aria-controls={panelId}
-    aria-expanded={String(isSelected)}
+    aria-expanded={isSelected ? 'true' : 'false'}
     data-mission-tab
   >
     <span class="mission__number">{missionNumber}</span>
