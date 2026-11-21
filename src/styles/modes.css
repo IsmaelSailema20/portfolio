@@ -40,10 +40,6 @@
   width: 6.5rem;
 }
 
-.step-counter {
-  display: none;
-}
-
 html:not([data-mode='immersive']) body::before,
 html:not([data-mode='immersive']) body::after {
   content: '';
@@ -245,8 +241,28 @@ html:not([data-mode='immersive']) .stage:first-of-type::before {
   display: none;
 }
 
-[data-mode='immersive'] .stage.is-stepping .step-counter {
-  display: block;
+[data-mode='immersive'] .stage.is-stepping [data-step]:not(.is-expanded) .step-detail {
+  display: none;
+}
+
+[data-mode='immersive'] .stage.is-stepping .project-card {
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+[data-mode='immersive'] .stage.is-stepping .project-card__body {
+  gap: var(--space-2);
+  padding: 0;
+}
+
+[data-mode='immersive'] .stage.is-stepping .project-card__title {
+  font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+}
+
+[data-mode='immersive'] .stage.is-stepping .project-card__summary {
+  font-size: var(--text-lead);
+  line-height: 1.4;
 }
 
 [data-mode='immersive'] .scene-labels {

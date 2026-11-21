@@ -23,6 +23,8 @@ import {
   resolveRouteFill,
   resolveStepLocalProgress,
   resolveStepProgress,
+  resolveStepTarget,
+  type StepTarget,
 } from './core/panelMath';
 import { readDeviceProfile, resolveQuality } from './core/quality';
 import { createScrollTracker } from './core/scrollTracker';
@@ -62,13 +64,17 @@ const flightSecondsPerViewport = 1.1;
 const minimumFlightSeconds = 0.8;
 const maximumFlightSeconds = 7;
 const interactiveElements = 'a, button, input, textarea, select';
+const textFields = 'input, textarea, select';
+const stepControlSelector = '[data-step-target], [data-step-shift]';
 const flightCancelEvents = ['wheel', 'touchstart', 'keydown'] as const;
 
 const panelSideValues: Record<string, number> = { left: -1, right: 1 };
+const stepShiftKeys: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1 };
 
 interface StageSection {
   element: HTMLElement;
   steps: HTMLElement[];
+  stepTargets: HTMLElement[];
   presence: number;
   activeStep: number;
 }
@@ -78,15 +84,10 @@ function countSceneItems(stageId: string): number {
   return Number(section?.dataset.itemCount ?? 0);
 }
 
-function readProjectImages(): (string | null)[] {
-  const projectSteps = document.querySelectorAll('[data-stage="projects"] [data-step]');
-  return Array.from(projectSteps, (step) => step.querySelector('img')?.currentSrc || step.querySelector('img')?.src || null);
-}
-
 function readSceneContent(): SceneContent {
   return {
-    projectImages: readProjectImages(),
-    skillGroupCount: countSceneItems('about'),
+    aboutBlockCount: countSceneItems('about'),
+    skillGroupCount: countSceneItems('skills'),
     experienceCount: countSceneItems('experience'),
     projectCount: countSceneItems('projects'),
   };
@@ -100,6 +101,7 @@ function findStageSection(stage: Stage): StageSection {
   return {
     element,
     steps: Array.from(element.querySelectorAll<HTMLElement>('[data-step]')),
+    stepTargets: Array.from(element.querySelectorAll<HTMLElement>('[data-step-target]')),
     presence: -1,
     activeStep: -1,
   };
@@ -137,7 +139,7 @@ export function startScene(canvas: HTMLCanvasElement): SceneHandle {
   const panelSides = sections.map(
     (section) => panelSideValues[section.element.dataset.side ?? ''] ?? 0,
   );
-  const manualControlStage = stages.findIndex((stage) => stage.id === 'experience');
+  const manualControlStage = stages.findIndex((stage) => stage.id === 'projects');
 
   const rocket = createRocket(palette);
   const exhaust = createExhaust(palette, quality);
@@ -211,7 +213,10 @@ export function startScene(canvas: HTMLCanvasElement): SceneHandle {
     camera.updateProjectionMatrix();
   }
 
-  function cancelFlight(): void {
+  function cancelFlight(event?: Event): void {
+    if (event instanceof KeyboardEvent && event.code in stepShiftKeys) {
+      return;
+    }
     flightTween?.kill();
     flightTween = null;
   }
@@ -245,6 +250,42 @@ export function startScene(canvas: HTMLCanvasElement): SceneHandle {
           ? resolveStepLocalProgress(0, stepCount)
           : arrivalProgress;
     flyTo(stagePosition, localProgress);
+  }
+
+  function flyToStepTarget(stepTarget: StepTarget | null): void {
+    if (!stepTarget) {
+      return;
+    }
+    if (stepTarget.stepIndex === null) {
+      flyToStage(stepTarget.stagePosition);
+      return;
+    }
+    const stepCount = sections[stepTarget.stagePosition].steps.length;
+    flyTo(stepTarget.stagePosition, resolveStepLocalProgress(stepTarget.stepIndex, stepCount));
+  }
+
+  function shiftStep(stagePosition: number, shift: number): void {
+    const stepCounts = sections.map((section) => section.steps.length);
+    const activeStep = Math.max(sections[stagePosition].activeStep, 0);
+    flyToStepTarget(resolveStepTarget(stagePosition, activeStep, stepCounts, shift));
+  }
+
+  function handleStepControlClick(event: MouseEvent): void {
+    const control =
+      event.target instanceof Element
+        ? event.target.closest<HTMLElement>(stepControlSelector)
+        : null;
+    const stagePosition = control
+      ? sections.findIndex((section) => section.element.contains(control))
+      : -1;
+    if (!control || stagePosition < 0) {
+      return;
+    }
+    if (control.dataset.stepTarget !== undefined) {
+      flyToStepTarget({ stagePosition, stepIndex: Number(control.dataset.stepTarget) });
+      return;
+    }
+    shiftStep(stagePosition, Number(control.dataset.stepShift));
   }
 
   function handleNavigationClick(event: MouseEvent): void {
@@ -284,6 +325,22 @@ export function startScene(canvas: HTMLCanvasElement): SceneHandle {
     if (canStart) {
       event.preventDefault();
       void beginAsteroidRun();
+      return;
+    }
+
+    const stepShift = stepShiftKeys[event.code];
+    const isOnTextField =
+      event.target instanceof Element && event.target.closest(textFields) !== null;
+    const canShift =
+      stepShift !== undefined &&
+      !isOnTextField &&
+      !asteroidRun &&
+      !isLoadingRun &&
+      !isJumping &&
+      stageIndex >= 0;
+    if (canShift) {
+      event.preventDefault();
+      shiftStep(stageIndex, stepShift);
     }
   }
 
@@ -311,6 +368,15 @@ export function startScene(canvas: HTMLCanvasElement): SceneHandle {
         section.activeStep = activeStep;
         section.steps.forEach((step, stepIndex) => {
           step.classList.toggle('is-current', stepIndex === activeStep);
+        });
+        section.stepTargets.forEach((stepTarget, stepIndex) => {
+          const isCurrent = stepIndex === activeStep;
+          stepTarget.classList.toggle('is-current', isCurrent);
+          if (isCurrent) {
+            stepTarget.setAttribute('aria-current', 'step');
+          } else {
+            stepTarget.removeAttribute('aria-current');
+          }
         });
       }
     });
@@ -451,6 +517,7 @@ export function startScene(canvas: HTMLCanvasElement): SceneHandle {
   window.addEventListener('resize', resize);
   window.addEventListener('keydown', handleKeyDown);
   document.addEventListener('click', handleNavigationClick);
+  document.addEventListener('click', handleStepControlClick);
   document.addEventListener('visibilitychange', handleVisibilityChange);
   for (const eventName of flightCancelEvents) {
     window.addEventListener(eventName, cancelFlight, { passive: true });
@@ -510,6 +577,7 @@ export function startScene(canvas: HTMLCanvasElement): SceneHandle {
       window.removeEventListener('resize', resize);
       window.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('click', handleNavigationClick);
+      document.removeEventListener('click', handleStepControlClick);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       for (const eventName of flightCancelEvents) {
         window.removeEventListener(eventName, cancelFlight);
@@ -526,6 +594,10 @@ export function startScene(canvas: HTMLCanvasElement): SceneHandle {
         section.element.classList.remove('is-stepping', 'is-away');
         for (const step of section.steps) {
           step.classList.remove('is-current');
+        }
+        for (const stepTarget of section.stepTargets) {
+          stepTarget.classList.remove('is-current');
+          stepTarget.removeAttribute('aria-current');
         }
       }
       for (const stop of routeStops) {

@@ -1,5 +1,6 @@
 ---
 import StageIllustration from './StageIllustration.astro';
+import StepNavigation from './StepNavigation.astro';
 import type { Locale } from '../../i18n/locales';
 import { stageIds, type StageId, ui } from '../../i18n/ui';
 
@@ -45,6 +46,7 @@ const title = stageId === 'home' ? undefined : dictionary.sectionTitles[stageId]
         }
       </header>
       <slot />
+      {stepCount > 1 && <StepNavigation locale={locale} stepCount={stepCount} />}
     </div>
   </div>
   <slot name="overlay" />

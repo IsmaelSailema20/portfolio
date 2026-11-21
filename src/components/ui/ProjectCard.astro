@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import DetailToggle from './DetailToggle.astro';
 import { localize, type Locale } from '../../i18n/locales';
 import { joinBasePath } from '../../i18n/paths';
 import { ui } from '../../i18n/ui';
@@ -7,18 +8,15 @@ import { ui } from '../../i18n/ui';
 interface Props {
   locale: Locale;
   project: CollectionEntry<'projects'>['data'];
-  projectIndex: number;
-  projectCount: number;
 }
 
-const { locale, project, projectIndex, projectCount } = Astro.props;
+const { locale, project } = Astro.props;
 const dictionary = ui[locale].projects;
 const title = localize(project.title, locale);
 const links = [
   { label: dictionary.repository, url: project.repository },
   { label: dictionary.demo, url: project.demo },
 ].filter((link) => link.url !== undefined);
-const counter = `${String(projectIndex + 1).padStart(2, '0')} / ${String(projectCount).padStart(2, '0')}`;
 ---
 
 <article class="project-card" data-step>
@@ -36,10 +34,11 @@ const counter = `${String(projectIndex + 1).padStart(2, '0')} / ${String(project
     )
   }
   <div class="project-card__body">
-    <p class="label">{project.year}</p>
+    <p class="label">{dictionary.categories[project.category]} · {project.year}</p>
     <h3 class="project-card__title">{title}</h3>
-    <p>{localize(project.summary, locale)}</p>
-    <p class="project-card__description">{localize(project.description, locale)}</p>
+    <p class="project-card__summary">{localize(project.summary, locale)}</p>
+    <DetailToggle locale={locale} />
+    <p class="project-card__description step-detail">{localize(project.description, locale)}</p>
     <ul class="technology-list">
       {project.technologies.map((technology) => <li>{technology}</li>)}
     </ul>
@@ -54,7 +53,6 @@ const counter = `${String(projectIndex + 1).padStart(2, '0')} / ${String(project
         ))
       }
     </ul>
-    <p class="label step-counter">{counter}</p>
   </div>
 </article>
 
