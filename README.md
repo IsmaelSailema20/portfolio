@@ -21,6 +21,7 @@ Todo el contenido vive en `src/content/`. Cada texto visible lleva `es` y `en`; 
 | ---------------------------------------------- | -------------------------------------------------------------------------------------- |
 | Nombre, rol, objetivo, bio, correo, enlaces y ruta del retrato | `src/content/profile.yaml` (retrato en `public/images/`)              |
 | Formación académica                            | un archivo por estudio en `src/content/education/`                                     |
+| Cursos y certificaciones                       | un archivo por curso en `src/content/courses/` (título es/en, institución y año)       |
 | Grupos de tecnologías (puestos de la base lunar) | `src/content/skills.yaml`                                                            |
 | Proyectos (estrellas de la constelación)       | un archivo por proyecto en `src/content/projects/`                                     |
 | Experiencia (paneles del enjambre de Dyson)    | un archivo por empleo en `src/content/experience/`                                     |

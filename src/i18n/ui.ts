@@ -44,6 +44,7 @@ export interface UiDictionary {
     objectiveTitle: string;
     biographyTitle: string;
     educationTitle: string;
+    coursesTitle: string;
   };
   experience: {
     present: string;
@@ -145,6 +146,7 @@ export const ui: Record<Locale, UiDictionary> = {
       objectiveTitle: 'Objetivo profesional',
       biographyTitle: 'Quién soy',
       educationTitle: 'Formación',
+      coursesTitle: 'Cursos y certificaciones',
     },
     experience: {
       present: 'Actualidad',
@@ -248,6 +250,7 @@ export const ui: Record<Locale, UiDictionary> = {
       objectiveTitle: 'Career goal',
       biographyTitle: 'Who I am',
       educationTitle: 'Education',
+      coursesTitle: 'Courses and certifications',
     },
     experience: {
       present: 'Present',
