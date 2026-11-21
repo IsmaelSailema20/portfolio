@@ -1,0 +1,103 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionShell from '../ui/SectionShell.astro';
+import StageIllustration from '../ui/StageIllustration.astro';
+import { localize, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  profile: CollectionEntry<'profile'>['data'];
+}
+
+const { locale, profile } = Astro.props;
+const dictionary = ui[locale];
+---
+
+<SectionShell stageId="home" locale={locale} side="left">
+  <div class="hero">
+    <div>
+      <p class="label hero__telemetry">
+        {dictionary.hero.telemetry} · {dictionary.mission}
+        <span data-mission-number>01</span>
+      </p>
+      <h1 class="hero__name" id="home-title">{profile.name}</h1>
+      <p class="hero__role">{localize(profile.role, locale)}</p>
+      <p class="hero__tagline">{localize(profile.tagline, locale)}</p>
+      <div class="hero__actions">
+        <a class="button" href="#about" data-magnetic>{dictionary.hero.callToAction}</a>
+        <span class="label only-immersive hero__hint">{dictionary.hero.scrollHint} ↓</span>
+      </div>
+    </div>
+    <div class="hero__illustration only-classic">
+      <StageIllustration stageId="home" />
+    </div>
+  </div>
+</SectionShell>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .hero__illustration {
+    width: clamp(10rem, 24vw, 20rem);
+  }
+
+  .hero__telemetry {
+    margin-bottom: var(--space-3);
+  }
+
+  .hero__name {
+    font-size: var(--text-hero);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .hero__role {
+    margin-top: var(--space-3);
+    font-size: var(--text-lead);
+    color: var(--color-accent);
+  }
+
+  .hero__tagline {
+    max-width: 34ch;
+    margin-top: var(--space-2);
+    font-size: var(--text-lead);
+    color: var(--color-muted);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+
+  @media (max-width: 44rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hero__illustration {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__hint {
+      animation: hint-pulse 2.4s ease-in-out infinite;
+    }
+  }
+
+  @keyframes hint-pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+</style>

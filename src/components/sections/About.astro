@@ -1,0 +1,92 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionShell from '../ui/SectionShell.astro';
+import { localize, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  profile: CollectionEntry<'profile'>['data'];
+  skillGroups: CollectionEntry<'skills'>[];
+}
+
+const { locale, profile, skillGroups } = Astro.props;
+const dictionary = ui[locale].about;
+const total = String(skillGroups.length).padStart(2, '0');
+---
+
+<SectionShell
+  stageId="about"
+  locale={locale}
+  side="right"
+  itemCount={skillGroups.length}
+  stepCount={skillGroups.length}
+>
+  <div class="about">
+    <div class="about__bio">
+      {localize(profile.bio, locale).map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+    <div class="about__skills">
+      <h3 class="label about__skills-title">{dictionary.skillsTitle}</h3>
+      <ul>
+        {
+          skillGroups.map((skillGroup, groupIndex) => (
+            <li class="skill-group" data-step>
+              <p class="skill-group__name">{localize(skillGroup.data.name, locale)}</p>
+              <p class="skill-group__description">
+                {localize(skillGroup.data.description, locale)}
+              </p>
+              <ul class="technology-list">
+                {skillGroup.data.items.map((item) => <li>{item}</li>)}
+              </ul>
+              <p class="label step-counter">
+                {String(groupIndex + 1).padStart(2, '0')} / {total}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</SectionShell>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    gap: var(--space-4) var(--space-5);
+  }
+
+  .about__bio {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    max-width: 58ch;
+  }
+
+  .about__skills-title {
+    margin-bottom: var(--space-2);
+    font-weight: 400;
+  }
+
+  .skill-group {
+    display: grid;
+    gap: 0.4rem;
+    padding-block: var(--space-2);
+    border-top: 1px solid var(--color-line);
+    transition: border-color var(--transition);
+  }
+
+  .skill-group:hover {
+    border-top-color: var(--color-accent);
+  }
+
+  .skill-group__name {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .skill-group__description {
+    color: var(--color-muted);
+  }
+</style>

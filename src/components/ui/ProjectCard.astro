@@ -1,0 +1,112 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { localize, type Locale } from '../../i18n/locales';
+import { joinBasePath } from '../../i18n/paths';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  project: CollectionEntry<'projects'>['data'];
+  projectIndex: number;
+  projectCount: number;
+}
+
+const { locale, project, projectIndex, projectCount } = Astro.props;
+const dictionary = ui[locale].projects;
+const title = localize(project.title, locale);
+const links = [
+  { label: dictionary.repository, url: project.repository },
+  { label: dictionary.demo, url: project.demo },
+].filter((link) => link.url !== undefined);
+const counter = `${String(projectIndex + 1).padStart(2, '0')} / ${String(projectCount).padStart(2, '0')}`;
+---
+
+<article class="project-card" data-step>
+  {
+    project.image && (
+      <img
+        class="project-card__image"
+        src={joinBasePath(import.meta.env.BASE_URL, project.image)}
+        alt={title}
+        width="640"
+        height="400"
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  }
+  <div class="project-card__body">
+    <p class="label">{project.year}</p>
+    <h3 class="project-card__title">{title}</h3>
+    <p>{localize(project.summary, locale)}</p>
+    <p class="project-card__description">{localize(project.description, locale)}</p>
+    <ul class="technology-list">
+      {project.technologies.map((technology) => <li>{technology}</li>)}
+    </ul>
+    <ul class="project-card__links">
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.url} rel="noopener">
+              {link.label} ↗
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="label step-counter">{counter}</p>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    display: grid;
+    align-content: start;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    overflow: hidden;
+    transition:
+      border-color var(--transition),
+      box-shadow var(--transition);
+  }
+
+  .project-card:hover,
+  .project-card:focus-within {
+    border-color: var(--color-interactive);
+    box-shadow: 0 0 32px rgb(111 214 232 / 0.12);
+  }
+
+  .project-card__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .project-card__body {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-3);
+  }
+
+  .project-card__title {
+    font-size: 1.4rem;
+  }
+
+  .project-card__description {
+    color: var(--color-muted);
+  }
+
+  .project-card__links {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+</style>

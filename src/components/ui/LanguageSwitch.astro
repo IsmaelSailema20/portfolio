@@ -1,0 +1,44 @@
+---
+import { alternateLocale, type Locale } from '../../i18n/locales';
+import { homePath } from '../../i18n/paths';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const targetLocale = alternateLocale(locale);
+---
+
+<a
+  class="language-switch"
+  href={homePath(import.meta.env.BASE_URL, targetLocale)}
+  hreflang={targetLocale}
+  lang={targetLocale}
+  aria-label={ui[locale].languageSwitchLabel}
+>
+  {targetLocale}
+</a>
+
+<style>
+  .language-switch {
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-muted);
+    transition:
+      color var(--transition),
+      border-color var(--transition);
+  }
+
+  .language-switch:hover {
+    border-color: var(--color-interactive);
+    color: var(--color-interactive);
+  }
+</style>

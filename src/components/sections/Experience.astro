@@ -1,0 +1,138 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionShell from '../ui/SectionShell.astro';
+import { formatPeriod } from '../../i18n/formatPeriod';
+import { localize, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  experiences: CollectionEntry<'experience'>[];
+}
+
+const { locale, experiences } = Astro.props;
+const dictionary = ui[locale].experience;
+const total = String(experiences.length).padStart(2, '0');
+---
+
+<SectionShell
+  stageId="experience"
+  locale={locale}
+  side="left"
+  itemCount={experiences.length}
+  stepCount={experiences.length}
+>
+  <ol class="experience-list">
+    {
+      experiences.map(({ data: experience }, experienceIndex) => (
+        <li class="experience" data-step>
+          <p class="label">
+            {formatPeriod(experience.start, experience.end, locale, dictionary.present)}
+          </p>
+          <div class="experience__body">
+            <h3 class="experience__role">
+              {localize(experience.role, locale)}
+              <span class="experience__company">{experience.company}</span>
+            </h3>
+            <div class="experience__challenge">
+              <p class="label label--accent">{dictionary.problem}</p>
+              <p class="experience__problem">{localize(experience.challenge.problem, locale)}</p>
+              <p class="label label--accent">{dictionary.approach}</p>
+              <p>{localize(experience.challenge.approach, locale)}</p>
+            </div>
+            <p class="experience__summary">{localize(experience.summary, locale)}</p>
+            <ul class="technology-list">
+              {experience.technologies.map((technology) => <li>{technology}</li>)}
+            </ul>
+            <p class="label step-counter">
+              {String(experienceIndex + 1).padStart(2, '0')} / {total}
+            </p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="label only-immersive experience__hint">{dictionary.manualControlHint}</p>
+
+  <ul slot="overlay" class="scene-labels" aria-hidden="true">
+    {
+      experiences.map(({ data: experience }, experienceIndex) => (
+        <li class="scene-label" data-scene-label={`experience:${experienceIndex}`}>
+          <span class="scene-label__body">
+            <strong>{experience.company}</strong>
+            {experience.start.slice(0, 4)}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</SectionShell>
+
+<style>
+  .experience {
+    display: grid;
+    gap: var(--space-2) var(--space-4);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--color-line);
+    transition: border-color var(--transition);
+  }
+
+  .experience:hover {
+    border-top-color: var(--color-accent);
+  }
+
+  .experience__body {
+    display: grid;
+    gap: var(--space-2);
+    max-width: 60ch;
+  }
+
+  .experience__role {
+    font-size: 1.2rem;
+  }
+
+  .experience__company {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: var(--text-body);
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--color-muted);
+  }
+
+  .experience__challenge {
+    display: grid;
+    gap: 0.3rem;
+    padding-left: var(--space-2);
+    border-left: 1px solid var(--color-accent);
+  }
+
+  .experience__problem {
+    margin-bottom: var(--space-1);
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .experience__summary {
+    color: var(--color-muted);
+  }
+
+  .experience__hint {
+    margin-top: var(--space-3);
+  }
+
+  @media (pointer: coarse) {
+    .experience__hint {
+      display: none;
+    }
+  }
+
+  @container (min-width: 44rem) {
+    .experience {
+      grid-template-columns: 13rem 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,26 @@
+name: Ismael Sailema
+location: Quito, Ecuador
+email: correo@ejemplo.com
+role:
+  es: Desarrollador de Software
+  en: Software Developer
+tagline:
+  es: Construyo servicios backend claros, medibles y fáciles de mantener, desde la mitad del mundo.
+  en: I build backend services that are clear, measurable and easy to maintain, from the middle of the world.
+bio:
+  es:
+    - Soy desarrollador de software con base en Quito. Me dedico sobre todo al backend, a diseñar APIs y a dejar los sistemas mejor de lo que los encontré.
+    - Me interesa entender el problema antes de escribir código, medir antes de optimizar y automatizar lo que se repite. Fuera del trabajo programo minijuegos y miro el cielo cada vez que está despejado.
+  en:
+    - I am a software developer based in Quito. I work mostly on the backend, designing APIs and leaving systems better than I found them.
+    - I like to understand the problem before writing code, measure before optimizing and automate whatever repeats. Outside of work I build small games and look at the sky whenever it is clear.
+links:
+  - kind: github
+    label: GitHub
+    url: https://github.com/usuario
+  - kind: linkedin
+    label: LinkedIn
+    url: https://www.linkedin.com/in/usuario
+curriculum:
+  es: cv/cv-es.pdf
+  en: cv/cv-en.pdf

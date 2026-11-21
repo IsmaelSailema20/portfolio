@@ -1,0 +1,256 @@
+---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/modes.css';
+import EcuadorEmblem from '../components/ui/EcuadorEmblem.astro';
+import LanguageSwitch from '../components/ui/LanguageSwitch.astro';
+import ModeToggle from '../components/ui/ModeToggle.astro';
+import RouteMap from '../components/ui/RouteMap.astro';
+import { locales, type Locale } from '../i18n/locales';
+import { homePath, joinBasePath } from '../i18n/paths';
+import { stageIds, ui } from '../i18n/ui';
+import { modeStorageKey } from '../interactions/modeResolution';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  ownerName: string;
+}
+
+const { locale, title, ownerName } = Astro.props;
+const dictionary = ui[locale];
+const basePath = import.meta.env.BASE_URL;
+const navigationStages = stageIds.filter((stageId) => stageId !== 'home');
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={dictionary.siteDescription} />
+    <meta name="theme-color" content="#070b14" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={dictionary.siteDescription} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href={joinBasePath(basePath, 'favicon.svg')} />
+    {
+      locales.map((alternate) => (
+        <link
+          rel="alternate"
+          hreflang={alternate}
+          href={new URL(homePath(basePath, alternate), Astro.site)}
+        />
+      ))
+    }
+    <script is:inline define:vars={{ modeStorageKey }}>
+      (function () {
+        var mode = 'classic';
+        try {
+          var storedMode = localStorage.getItem(modeStorageKey);
+          var prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (storedMode === 'immersive' || storedMode === 'classic') {
+            mode = storedMode;
+          } else if (!prefersReducedMotion) {
+            mode = 'immersive';
+          }
+        } catch (error) {
+          mode = 'classic';
+        }
+        document.documentElement.dataset.mode = mode;
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">{dictionary.skipToContent}</a>
+    <canvas class="scene-canvas" data-scene-canvas aria-hidden="true"></canvas>
+
+    <header class="site-header">
+      <div class="container site-header__content">
+        <a class="site-header__brand" href={homePath(basePath, locale)}>{ownerName}</a>
+        <nav class="site-header__navigation" aria-label={dictionary.navigationLabel}>
+          <ul>
+            {
+              navigationStages.map((stageId) => (
+                <li>
+                  <a href={`#${stageId}`}>{dictionary.navigationItems[stageId]}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        <RouteMap locale={locale} />
+        <div class="site-header__controls">
+          <LanguageSwitch locale={locale} />
+          <ModeToggle locale={locale} />
+        </div>
+      </div>
+    </header>
+
+    <main id="content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__flag" aria-hidden="true">
+        <span class="site-footer__emblem"><EcuadorEmblem /></span>
+      </div>
+      <div class="container site-footer__content">
+        <p class="label">{dictionary.footer.madeIn}</p>
+        <p class="label">{dictionary.footer.coordinates}</p>
+      </div>
+    </footer>
+
+    <aside class="minigame-hud" data-minigame-hud hidden aria-live="polite">
+      <p class="label label--accent">{dictionary.minigame.title}</p>
+      <p>{dictionary.minigame.instructions}</p>
+      <p class="label">
+        {dictionary.minigame.time}
+        <span data-minigame-time>0</span> · {dictionary.minigame.hits}
+        <span data-minigame-hits>0</span>
+      </p>
+    </aside>
+    <aside class="telemetry" aria-label={dictionary.telemetryLabel}>
+      <span>
+        {dictionary.mission}
+        <span data-mission-number>01</span>
+      </span>
+      <span data-telemetry-clock>T− 00:10</span>
+      <span data-telemetry-distance>0 km</span>
+    </aside>
+    <div class="warp-flash" data-warp-flash aria-hidden="true"></div>
+
+    <script>
+      import { initializeMagneticElements } from '../interactions/magnetic';
+      import { readMissionNumber, renderMissionNumber } from '../interactions/mission';
+      import { initializeModeController } from '../interactions/modeController';
+      import { initializeWarpLinks } from '../interactions/warpLinks';
+
+      const modeController = initializeModeController();
+      initializeWarpLinks(modeController);
+      initializeMagneticElements();
+      renderMissionNumber(readMissionNumber());
+    </script>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: var(--header-height);
+    border-bottom: 1px solid var(--color-line);
+    background: rgb(7 11 20 / 0.88);
+  }
+
+  .site-header__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    height: 100%;
+  }
+
+  .site-header__brand {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .site-header__navigation ul {
+    display: flex;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .site-header__navigation a {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  :global([data-mode='immersive']) .site-header__navigation {
+    display: none;
+  }
+
+  .site-header__navigation a:hover {
+    color: var(--color-interactive);
+  }
+
+  .site-header__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .site-footer__flag {
+    position: relative;
+    height: 8px;
+    background: linear-gradient(
+      to bottom,
+      var(--flag-yellow) 0 50%,
+      var(--flag-blue) 50% 75%,
+      var(--flag-red) 75% 100%
+    );
+  }
+
+  .site-footer__emblem {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1.9rem;
+    padding: 0.2rem 0.35rem;
+    border-radius: 50%;
+    background: var(--color-void);
+    transform: translate(-50%, -50%);
+  }
+
+  .site-footer__content {
+    padding-top: var(--space-4);
+  }
+
+  .site-footer__content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-3);
+    padding-block: var(--space-3);
+  }
+
+  .minigame-hud {
+    position: fixed;
+    left: 50%;
+    bottom: var(--space-4);
+    z-index: 15;
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--panel-backdrop);
+    text-align: center;
+    transform: translateX(-50%);
+  }
+
+  @media (max-width: 52rem) {
+    .site-header__navigation {
+      display: none;
+    }
+
+    .site-header__content {
+      gap: var(--space-2);
+    }
+
+    .site-header__brand {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+</style>

@@ -1,0 +1,15 @@
+order: 4
+year: 2024
+title:
+  es: Meteoros
+  en: Meteors
+summary:
+  es: Minijuego de navegador para esquivar una lluvia de meteoritos.
+  en: Browser mini game about dodging a meteor shower.
+description:
+  es: Bucle de juego propio, colisiones por distancia y dificultad progresiva, sin motor externo.
+  en: Custom game loop, distance based collisions and progressive difficulty, with no external engine.
+image: projects/meteoros.svg
+technologies: [TypeScript, Canvas]
+repository: https://github.com/usuario/meteoros
+demo: https://usuario.github.io/meteoros

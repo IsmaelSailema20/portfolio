@@ -1,0 +1,135 @@
+---
+import type { Locale } from '../../i18n/locales';
+import { stageIds, ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = ui[locale];
+---
+
+<nav class="route-map" aria-label={dictionary.routeLabel}>
+  <ol class="route-map__stops">
+    {
+      stageIds.map((stageId, stopIndex) => (
+        <li>
+          <a
+            class="route-map__stop"
+            href={`#${stageId}`}
+            title={dictionary.stageNames[stageId]}
+            data-route-stop={stopIndex}
+            data-label={dictionary.stageNames[stageId]}
+          >
+            <span class="route-map__name">{dictionary.stageNames[stageId]}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="label route-map__current" data-route-current aria-hidden="true">
+    {dictionary.stageNames.home}
+  </p>
+</nav>
+
+<style>
+  .route-map {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  :global([data-mode='immersive']) .route-map {
+    display: flex;
+  }
+
+  .route-map__stops {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 9rem;
+  }
+
+  .route-map__stops::before,
+  .route-map__stops::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .route-map__stops::before {
+    width: 100%;
+  }
+
+  .route-map__stops::after {
+    width: calc(var(--route-fill, 0) * 100%);
+    background: var(--color-accent);
+  }
+
+  .route-map__stop {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 0.6rem;
+    height: 0.6rem;
+    border: 1px solid var(--color-muted);
+    border-radius: 50%;
+    background: var(--color-void);
+    transition:
+      transform var(--transition),
+      background-color var(--transition),
+      border-color var(--transition);
+  }
+
+  .route-map__stop::after {
+    content: '';
+    position: absolute;
+    inset: -0.6rem;
+  }
+
+  .route-map__stop:hover {
+    border-color: var(--color-interactive);
+    transform: scale(1.3);
+  }
+
+  .route-map__stop:global(.is-visited) {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+  }
+
+  .route-map__stop[aria-current] {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    box-shadow: 0 0 0 3px rgb(242 160 61 / 0.25);
+    transform: scale(1.3);
+  }
+
+  .route-map__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .route-map__current {
+    min-width: 11rem;
+    color: var(--color-text);
+  }
+
+  @media (max-width: 52rem) {
+    .route-map__current {
+      display: none;
+    }
+
+    .route-map__stops {
+      width: 6.5rem;
+    }
+  }
+</style>
