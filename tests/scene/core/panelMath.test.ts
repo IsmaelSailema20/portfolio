@@ -7,8 +7,49 @@ import {
   resolveRouteFill,
   resolveStepLocalProgress,
   resolveStepProgress,
+  resolveStepTarget,
   stepRange,
 } from '../../../src/scene/core/panelMath';
+
+describe('resolveStepTarget', () => {
+  const stepCounts = [0, 3, 5, 0];
+
+  it('moves to the next and previous step inside a stage', () => {
+    expect(resolveStepTarget(1, 0, stepCounts, 1)).toEqual({ stagePosition: 1, stepIndex: 1 });
+    expect(resolveStepTarget(1, 2, stepCounts, -1)).toEqual({ stagePosition: 1, stepIndex: 1 });
+  });
+
+  it('enters the next stage at its first step after the last step', () => {
+    expect(resolveStepTarget(1, 2, stepCounts, 1)).toEqual({ stagePosition: 2, stepIndex: 0 });
+  });
+
+  it('enters the previous stage at its last step before the first step', () => {
+    expect(resolveStepTarget(2, 0, stepCounts, -1)).toEqual({ stagePosition: 1, stepIndex: 2 });
+  });
+
+  it('targets the whole stage when it has no steps', () => {
+    expect(resolveStepTarget(2, 4, stepCounts, 1)).toEqual({ stagePosition: 3, stepIndex: null });
+    expect(resolveStepTarget(1, 0, stepCounts, -1)).toEqual({ stagePosition: 0, stepIndex: null });
+  });
+
+  it('leaves stages without steps for their neighbours', () => {
+    expect(resolveStepTarget(0, 0, stepCounts, 1)).toEqual({ stagePosition: 1, stepIndex: 0 });
+    expect(resolveStepTarget(3, 0, stepCounts, -1)).toEqual({ stagePosition: 2, stepIndex: 4 });
+  });
+
+  it('stops at both ends of the journey', () => {
+    expect(resolveStepTarget(0, 0, stepCounts, -1)).toBeNull();
+    expect(resolveStepTarget(3, 0, stepCounts, 1)).toBeNull();
+  });
+
+  it('ignores a shift of zero', () => {
+    expect(resolveStepTarget(0, 0, stepCounts, 0)).toBeNull();
+  });
+
+  it('jumps to a step several positions away', () => {
+    expect(resolveStepTarget(2, 0, stepCounts, 3)).toEqual({ stagePosition: 2, stepIndex: 3 });
+  });
+});
 
 describe('panel settings', () => {
   it('fades panels in and out near the stage edges', () => {
