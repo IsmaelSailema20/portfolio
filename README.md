@@ -28,6 +28,7 @@ Todo el contenido vive en `src/content/`. Cada texto visible lleva `es` y `en`; 
 | Logo de cada tecnología (holograma)            | `src/components/ui/technologyIcons.ts`, con íconos de `simple-icons`; sin ícono se muestra un monograma |
 | Textos de interfaz (botones, títulos, menú)    | `src/i18n/ui.ts`                                                                       |
 | CV descargable                                 | `public/cv/cv-es.pdf` y `public/cv/cv-en.pdf`                                          |
+| Formulario de contacto (Web3Forms)             | `contactFormAccessKey` en `site.config.ts`, con la access key creada en web3forms.com; los mensajes llegan al correo con el que se creó |
 
 Para agregar un proyecto o una experiencia, copia un archivo existente de su carpeta y edítalo. Para quitarlo, borra el archivo. La escena 3D se ajusta sola a la cantidad de entradas.
 

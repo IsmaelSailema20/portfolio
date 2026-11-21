@@ -68,11 +68,15 @@ export interface UiDictionary {
     email: string;
     formTitle: string;
     nameLabel: string;
+    emailLabel: string;
     subjectLabel: string;
     messageLabel: string;
     send: string;
     formHint: string;
     downloadCurriculum: string;
+    sending: string;
+    success: string;
+    failure: string;
     crossWormhole: string;
     backToStart: string;
   };
@@ -172,10 +176,14 @@ export const ui: Record<Locale, UiDictionary> = {
       email: 'Correo',
       formTitle: 'Envíame un mensaje',
       nameLabel: 'Nombre',
+      emailLabel: 'Tu correo',
       subjectLabel: 'Asunto',
       messageLabel: 'Mensaje',
       send: 'Enviar mensaje',
-      formHint: 'Se abrirá tu aplicación de correo con el mensaje listo para enviar.',
+      formHint: 'Te responderé al correo que indiques.',
+      sending: 'Enviando transmisión…',
+      success: 'Mensaje recibido. Te responderé pronto.',
+      failure: 'No se pudo enviar. Inténtalo de nuevo o escríbeme al correo.',
       downloadCurriculum: 'Descargar CV',
       crossWormhole: 'Atravesar el agujero',
       backToStart: 'Volver al inicio',
@@ -274,10 +282,14 @@ export const ui: Record<Locale, UiDictionary> = {
       email: 'Email',
       formTitle: 'Send me a message',
       nameLabel: 'Name',
+      emailLabel: 'Your email',
       subjectLabel: 'Subject',
       messageLabel: 'Message',
       send: 'Send message',
-      formHint: 'Your email app will open with the message ready to send.',
+      formHint: 'I will reply to the email you provide.',
+      sending: 'Sending transmission…',
+      success: 'Message received. I will get back to you soon.',
+      failure: 'The message could not be sent. Try again or email me directly.',
       downloadCurriculum: 'Download CV',
       crossWormhole: 'Cross the wormhole',
       backToStart: 'Back to start',

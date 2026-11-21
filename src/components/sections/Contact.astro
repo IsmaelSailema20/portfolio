@@ -4,6 +4,7 @@ import SectionShell from '../ui/SectionShell.astro';
 import { localize, type Locale } from '../../i18n/locales';
 import { joinBasePath } from '../../i18n/paths';
 import { ui } from '../../i18n/ui';
+import { contactFormAccessKey } from '../../../site.config';
 
 interface Props {
   locale: Locale;
@@ -33,11 +34,22 @@ const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.c
       ))
     }
   </ul>
-  <form class="contact-form" data-contact-form data-recipient={profile.email}>
+  <form
+    class="contact-form"
+    data-contact-form
+    data-access-key={contactFormAccessKey}
+    data-sending-message={dictionary.sending}
+    data-success-message={dictionary.success}
+    data-failure-message={dictionary.failure}
+  >
     <h3 class="label label--accent">{dictionary.formTitle}</h3>
     <label class="contact-form__field">
       <span class="label">{dictionary.nameLabel}</span>
       <input type="text" name="name" autocomplete="name" required />
+    </label>
+    <label class="contact-form__field">
+      <span class="label">{dictionary.emailLabel}</span>
+      <input type="email" name="email" autocomplete="email" required />
     </label>
     <label class="contact-form__field">
       <span class="label">{dictionary.subjectLabel}</span>
@@ -47,10 +59,19 @@ const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.c
       <span class="label">{dictionary.messageLabel}</span>
       <textarea name="message" rows="5" required></textarea>
     </label>
+    <input
+      class="contact-form__trap"
+      type="checkbox"
+      name="botcheck"
+      tabindex="-1"
+      autocomplete="off"
+      aria-hidden="true"
+    />
     <div class="contact-form__footer">
       <button class="button" type="submit" data-magnetic>{dictionary.send} →</button>
       <p class="contact-form__hint">{dictionary.formHint}</p>
     </div>
+    <p class="contact-form__status" role="status" data-contact-status></p>
   </form>
   <div class="contact__actions">
     <a class="button" href={curriculumPath} download data-curriculum-link data-magnetic>
@@ -132,6 +153,35 @@ const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.c
     max-width: 30ch;
     font-size: var(--text-small);
     color: var(--color-muted);
+  }
+
+  .contact-form button[type='submit']:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .contact-form__trap {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .contact-form__status {
+    min-height: 1.5em;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+  }
+
+  .contact-form__status[data-state='success'] {
+    color: var(--color-interactive);
+  }
+
+  .contact-form__status[data-state='failure'] {
+    color: var(--color-accent);
   }
 
   .contact__actions {
