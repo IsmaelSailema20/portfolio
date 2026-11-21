@@ -162,14 +162,13 @@ html:not([data-mode='immersive']) .stage:first-of-type::before {
   pointer-events: none;
 }
 
-[data-mode='immersive'] main,
-[data-mode='immersive'] .site-footer {
+[data-mode='immersive'] main {
   position: relative;
   z-index: 1;
 }
 
 [data-mode='immersive'] .site-footer {
-  background: var(--color-void);
+  display: none;
 }
 
 [data-mode='immersive'].has-scene-hover {
