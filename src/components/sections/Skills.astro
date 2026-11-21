@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import SectionShell from '../ui/SectionShell.astro';
+import TechHologram from '../ui/TechHologram.astro';
 import { localize, type Locale } from '../../i18n/locales';
 
 interface Props {
@@ -22,10 +23,14 @@ const { locale, skillGroups } = Astro.props;
     {
       skillGroups.map((skillGroup) => (
         <li class="skill-group" data-step>
-          <p class="skill-group__name">{localize(skillGroup.data.name, locale)}</p>
-          <p class="skill-group__description">{localize(skillGroup.data.description, locale)}</p>
-          <ul class="technology-list">
-            {skillGroup.data.items.map((item) => <li>{item}</li>)}
+          <div class="skill-group__heading">
+            <p class="skill-group__name">{localize(skillGroup.data.name, locale)}</p>
+            <p class="skill-group__description">{localize(skillGroup.data.description, locale)}</p>
+          </div>
+          <ul class="hologram-deck">
+            {skillGroup.data.items.map((item, itemIndex) => (
+              <TechHologram technology={item} index={itemIndex} />
+            ))}
           </ul>
         </li>
       ))
@@ -36,29 +41,47 @@ const { locale, skillGroups } = Astro.props;
 <style>
   .skill-groups {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
-    gap: 0 var(--space-5);
+    gap: var(--space-4);
   }
 
   .skill-group {
     display: grid;
-    align-content: start;
-    gap: 0.4rem;
-    padding-block: var(--space-2);
+    gap: var(--space-3);
+    padding-top: var(--space-3);
     border-top: 1px solid var(--color-line);
-    transition: border-color var(--transition);
   }
 
-  .skill-group:hover {
-    border-top-color: var(--color-accent);
+  .skill-group__heading {
+    display: grid;
+    gap: 0.35rem;
+    max-width: 46ch;
   }
 
   .skill-group__name {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     font-weight: 600;
   }
 
   .skill-group__description {
     color: var(--color-muted);
+  }
+
+  .hologram-deck {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-1);
+    padding: var(--space-2) var(--space-2) var(--space-1);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 100%, rgb(111 214 232 / 0.08), transparent),
+      linear-gradient(rgb(111 214 232 / 0.05) 1px, transparent 1px) 0 0 / 100% 12px;
+  }
+
+  @container (min-width: 52rem) {
+    .skill-group {
+      grid-template-columns: 17rem 1fr;
+      align-items: center;
+    }
   }
 </style>

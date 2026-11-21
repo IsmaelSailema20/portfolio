@@ -41,6 +41,7 @@ export interface UiDictionary {
     scrollHint: string;
   };
   about: {
+    avatarAlt: string;
     objectiveTitle: string;
     biographyTitle: string;
     educationTitle: string;
@@ -134,6 +135,7 @@ export const ui: Record<Locale, UiDictionary> = {
       scrollHint: 'Scroll para despegar',
     },
     about: {
+      avatarAlt: 'Avatar de astronauta con el parche de Ecuador',
       objectiveTitle: 'Objetivo profesional',
       biographyTitle: 'Quién soy',
       educationTitle: 'Formación',
@@ -229,6 +231,7 @@ export const ui: Record<Locale, UiDictionary> = {
       scrollHint: 'Scroll to lift off',
     },
     about: {
+      avatarAlt: 'Astronaut avatar with the Ecuador patch',
       objectiveTitle: 'Career goal',
       biographyTitle: 'Who I am',
       educationTitle: 'Education',

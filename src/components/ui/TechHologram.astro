@@ -1,0 +1,171 @@
+---
+import { formatMonogram, resolveTechnologyIcon } from './technologyIcons';
+
+interface Props {
+  technology: string;
+  index?: number;
+  compact?: boolean;
+}
+
+const { technology, index = 0, compact = false } = Astro.props;
+const icon = resolveTechnologyIcon(technology);
+---
+
+<li
+  class:list={['tech-hologram', { 'tech-hologram--compact': compact }]}
+  style={`--hologram-index: ${index}`}
+>
+  <span class="tech-hologram__stage" aria-hidden="true">
+    <span class="tech-hologram__cone"></span>
+    <span class="tech-hologram__projection">
+      {
+        icon ? (
+          <svg class="tech-hologram__icon" viewBox="0 0 24 24">
+            <path d={icon.path} />
+          </svg>
+        ) : (
+          <span class="tech-hologram__monogram">{formatMonogram(technology)}</span>
+        )
+      }
+    </span>
+    <span class="tech-hologram__emitter"></span>
+  </span>
+  <span class="tech-hologram__name">{technology}</span>
+</li>
+
+<style>
+  .tech-hologram {
+    --hologram: var(--color-interactive);
+    --projection-size: 2.9rem;
+    display: grid;
+    justify-items: center;
+    gap: 0.45rem;
+    width: 5.6rem;
+    text-align: center;
+  }
+
+  .tech-hologram--compact {
+    --projection-size: 1.7rem;
+    width: 4.4rem;
+    gap: 0.3rem;
+  }
+
+  .tech-hologram:hover {
+    --hologram: var(--color-accent);
+  }
+
+  .tech-hologram__stage {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    padding-top: 0.4rem;
+  }
+
+  .tech-hologram__cone {
+    position: absolute;
+    left: 50%;
+    bottom: 0.25rem;
+    width: calc(var(--projection-size) * 1.6);
+    height: calc(var(--projection-size) * 1.3);
+    background: linear-gradient(to top, color-mix(in srgb, var(--hologram) 32%, transparent), transparent);
+    clip-path: polygon(38% 100%, 62% 100%, 100% 0, 0 0);
+    transform: translateX(-50%);
+    transition: background var(--transition);
+  }
+
+  .tech-hologram__projection {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--projection-size);
+    height: var(--projection-size);
+    margin-bottom: 0.55rem;
+  }
+
+  .tech-hologram__projection::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgb(7 11 20 / 0.55) 0 1px,
+      transparent 1px 3px
+    );
+    pointer-events: none;
+  }
+
+  .tech-hologram__icon {
+    width: 100%;
+    height: 100%;
+    fill: var(--hologram);
+    opacity: 0.88;
+    filter: drop-shadow(0 0 6px var(--hologram));
+    transition: fill var(--transition);
+  }
+
+  .tech-hologram__monogram {
+    font-family: var(--font-mono);
+    font-size: calc(var(--projection-size) * 0.48);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--hologram);
+    text-shadow: 0 0 8px var(--hologram);
+  }
+
+  .tech-hologram__emitter {
+    width: calc(var(--projection-size) * 1.15);
+    height: 0.45rem;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, var(--hologram), transparent 70%);
+    opacity: 0.75;
+  }
+
+  .tech-hologram__name {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    line-height: 1.25;
+    color: var(--color-muted);
+  }
+
+  .tech-hologram--compact .tech-hologram__name {
+    font-size: 0.72rem;
+  }
+
+  .tech-hologram:hover .tech-hologram__name {
+    color: var(--color-text);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .tech-hologram__projection {
+      animation:
+        hologram-float 4.2s ease-in-out infinite,
+        hologram-flicker 6s steps(1, end) infinite;
+      animation-delay: calc(var(--hologram-index) * -0.7s), calc(var(--hologram-index) * -1.3s);
+    }
+  }
+
+  @keyframes hologram-float {
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+
+  @keyframes hologram-flicker {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    91% {
+      opacity: 0.55;
+    }
+    93% {
+      opacity: 1;
+    }
+    95% {
+      opacity: 0.7;
+    }
+    96% {
+      opacity: 1;
+    }
+  }
+</style>

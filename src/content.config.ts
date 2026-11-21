@@ -33,6 +33,7 @@ const profile = defineCollection({
       }),
     ),
     curriculum: localizedText,
+    portrait: z.string().min(1).optional(),
   }),
 });
 

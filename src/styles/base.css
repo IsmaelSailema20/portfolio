@@ -96,15 +96,6 @@ button {
   color: var(--color-accent);
 }
 
-.technology-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 1rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-small);
-  color: var(--color-muted);
-}
-
 .button {
   display: inline-flex;
   align-items: center;

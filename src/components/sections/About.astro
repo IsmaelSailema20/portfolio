@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import HologramPortrait from '../ui/HologramPortrait.astro';
 import SectionShell from '../ui/SectionShell.astro';
 import { localize, type Locale } from '../../i18n/locales';
 import { ui } from '../../i18n/ui';
@@ -23,35 +24,64 @@ const blockCount = 3;
   itemCount={blockCount}
   stepCount={blockCount}
 >
-  <div class="about">
-    <div class="about-block about-block--objective" data-step>
-      <h3 class="label label--accent">{dictionary.objectiveTitle}</h3>
-      <p class="about-block__objective">{localize(profile.objective, locale)}</p>
-    </div>
-    <div class="about-block" data-step>
-      <h3 class="label">{dictionary.biographyTitle}</h3>
-      {localize(profile.bio, locale).map((paragraph) => <p>{paragraph}</p>)}
-    </div>
-    <div class="about-block" data-step>
-      <h3 class="label">{dictionary.educationTitle}</h3>
-      <ul class="education-list">
-        {
-          educationEntries.map(({ data: education }) => (
-            <li class="education">
-              <p class="education__degree">{localize(education.degree, locale)}</p>
-              <p class="education__institution">{education.institution}</p>
-              <p class="label">
-                {education.start} — {education.end ?? presentLabel}
-              </p>
-            </li>
-          ))
-        }
-      </ul>
+  <div class="about-layout">
+    {
+      profile.portrait && (
+        <div class="about-layout__portrait only-classic">
+          <HologramPortrait
+            source={profile.portrait}
+            name={profile.name}
+            description={dictionary.avatarAlt}
+          />
+        </div>
+      )
+    }
+    <div class="about">
+      <div class="about-block about-block--objective" data-step>
+        <h3 class="label label--accent">{dictionary.objectiveTitle}</h3>
+        <p class="about-block__objective">{localize(profile.objective, locale)}</p>
+      </div>
+      <div class="about-block" data-step>
+        <h3 class="label">{dictionary.biographyTitle}</h3>
+        {localize(profile.bio, locale).map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <div class="about-block" data-step>
+        <h3 class="label">{dictionary.educationTitle}</h3>
+        <ul class="education-list">
+          {
+            educationEntries.map(({ data: education }) => (
+              <li class="education">
+                <p class="education__degree">{localize(education.degree, locale)}</p>
+                <p class="education__institution">{education.institution}</p>
+                <p class="label">
+                  {education.start} — {education.end ?? presentLabel}
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </div>
 </SectionShell>
 
 <style>
+  .about-layout {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .about-layout__portrait {
+    justify-self: center;
+  }
+
+  @container (min-width: 52rem) {
+    .about-layout {
+      grid-template-columns: 17rem minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+
   .about {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));

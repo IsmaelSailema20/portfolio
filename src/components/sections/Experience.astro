@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import DetailToggle from '../ui/DetailToggle.astro';
 import SectionShell from '../ui/SectionShell.astro';
+import TechHologram from '../ui/TechHologram.astro';
 import { formatPeriod } from '../../i18n/formatPeriod';
 import { localize, type Locale } from '../../i18n/locales';
 import { ui } from '../../i18n/ui';
@@ -35,8 +36,10 @@ const dictionary = ui[locale].experience;
               <span class="experience__company">{experience.company}</span>
             </h3>
             <p class="experience__summary">{localize(experience.summary, locale)}</p>
-            <ul class="technology-list">
-              {experience.technologies.map((technology) => <li>{technology}</li>)}
+            <ul class="experience__technologies">
+              {experience.technologies.map((technology, technologyIndex) => (
+                <TechHologram technology={technology} index={technologyIndex} compact />
+              ))}
             </ul>
             <DetailToggle locale={locale} />
             <div class="experience__challenge step-detail">
@@ -102,6 +105,12 @@ const dictionary = ui[locale].experience;
 
   .experience__summary {
     color: var(--color-muted);
+  }
+
+  .experience__technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) 0.25rem;
   }
 
   @container (min-width: 44rem) {
