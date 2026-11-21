@@ -5,10 +5,10 @@ import type { PanelWindow } from './panelMath';
 import type { Quality } from './quality';
 
 export interface SceneContent {
+  aboutBlockCount: number;
   skillGroupCount: number;
   experienceCount: number;
   projectCount: number;
-  projectImages: (string | null)[];
 }
 
 export interface StageOptions {

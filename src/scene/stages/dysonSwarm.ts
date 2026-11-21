@@ -17,8 +17,6 @@ import {
   SphereGeometry,
   Sprite,
   SpriteMaterial,
-  SRGBColorSpace,
-  TextureLoader,
   Vector3,
 } from 'three';
 import { createSeededRandom, damp, dampingFactor } from '../core/math';
@@ -118,13 +116,14 @@ interface Collector {
   position: Vector3;
   body: Mesh;
   rimMaterial: LineBasicMaterial;
+  screenMaterial: MeshBasicMaterial;
 }
 
-function resolveCollectorDirection(projectIndex: number, projectCount: number): Vector3 {
-  const arcSpan = Math.min(maximumArcSpan, arcStepAngle * (projectCount - 1));
-  const arcFraction = projectCount > 1 ? projectIndex / (projectCount - 1) - 0.5 : 0;
+function resolveCollectorDirection(collectorIndex: number, collectorCount: number): Vector3 {
+  const arcSpan = Math.min(maximumArcSpan, arcStepAngle * (collectorCount - 1));
+  const arcFraction = collectorCount > 1 ? collectorIndex / (collectorCount - 1) - 0.5 : 0;
   const azimuth = arcCenter + arcFraction * arcSpan;
-  const elevation = (projectIndex % 2 === 0 ? 1 : -1) * elevationSwing;
+  const elevation = (collectorIndex % 2 === 0 ? 1 : -1) * elevationSwing;
   return new Vector3(
     Math.sin(azimuth) * Math.cos(elevation),
     Math.sin(elevation),
@@ -224,11 +223,12 @@ export function createDysonSwarm({ content, quality, palette }: StageOptions): S
     metalness: 0.7,
     flatShading: true,
   });
-  const textureLoader = new TextureLoader();
+  const restingScreenColor = palette.color('hullDark');
+  const activeScreenColor = palette.color('hullDark').lerp(accentColor, 0.45);
   const collectors: Collector[] = [];
 
-  for (let projectIndex = 0; projectIndex < content.projectCount; projectIndex += 1) {
-    const direction = resolveCollectorDirection(projectIndex, content.projectCount);
+  for (let collectorIndex = 0; collectorIndex < content.experienceCount; collectorIndex += 1) {
+    const direction = resolveCollectorDirection(collectorIndex, content.experienceCount);
     const position = anchor.clone().addScaledVector(direction, collectorOrbitRadius);
 
     const collector = new Group();
@@ -236,7 +236,7 @@ export function createDysonSwarm({ content, quality, palette }: StageOptions): S
     collector.lookAt(position.clone().add(direction));
 
     const body = new Mesh(collectorGeometry, collectorMaterial);
-    body.userData.itemIndex = projectIndex;
+    body.userData.itemIndex = collectorIndex;
 
     const rimMaterial = new LineBasicMaterial({
       color: accentColor.clone(),
@@ -245,24 +245,13 @@ export function createDysonSwarm({ content, quality, palette }: StageOptions): S
     });
     const rim = new LineSegments(collectorEdges, rimMaterial);
 
-    const screenMaterial = new MeshBasicMaterial({ color: palette.color('hullDark') });
+    const screenMaterial = new MeshBasicMaterial({ color: restingScreenColor.clone() });
     const screen = new Mesh(screenGeometry, screenMaterial);
     screen.position.z = collectorThickness / 2 + 0.02;
 
-    const imageSource = content.projectImages[projectIndex];
-    if (imageSource) {
-      textureLoader.load(imageSource, (texture) => {
-        texture.colorSpace = SRGBColorSpace;
-        texture.anisotropy = 8;
-        screenMaterial.color.set(0xffffff);
-        screenMaterial.map = texture;
-        screenMaterial.needsUpdate = true;
-      });
-    }
-
     collector.add(body, rim, screen);
     group.add(collector);
-    collectors.push({ direction, position, body, rimMaterial });
+    collectors.push({ direction, position, body, rimMaterial, screenMaterial });
   }
 
   const dockingPoints = collectors.map((collector) =>
@@ -286,7 +275,7 @@ export function createDysonSwarm({ content, quality, palette }: StageOptions): S
   let activeCollector = 0;
 
   return {
-    id: 'projects',
+    id: 'experience',
     group,
     waypoints,
     cameraOffset,
@@ -321,6 +310,10 @@ export function createDysonSwarm({ content, quality, palette }: StageOptions): S
           deltaTime,
         );
         collector.rimMaterial.color.lerp(isHighlighted ? interactiveColor : accentColor, 0.15);
+        collector.screenMaterial.color.lerp(
+          isActive ? activeScreenColor : restingScreenColor,
+          dampingFactor(4, deltaTime),
+        );
       });
     },
     setHighlight(itemIndex) {

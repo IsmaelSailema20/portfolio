@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import DetailToggle from '../ui/DetailToggle.astro';
 import SectionShell from '../ui/SectionShell.astro';
 import { formatPeriod } from '../../i18n/formatPeriod';
 import { localize, type Locale } from '../../i18n/locales';
@@ -12,19 +13,18 @@ interface Props {
 
 const { locale, experiences } = Astro.props;
 const dictionary = ui[locale].experience;
-const total = String(experiences.length).padStart(2, '0');
 ---
 
 <SectionShell
   stageId="experience"
   locale={locale}
-  side="left"
+  side="right"
   itemCount={experiences.length}
   stepCount={experiences.length}
 >
   <ol class="experience-list">
     {
-      experiences.map(({ data: experience }, experienceIndex) => (
+      experiences.map(({ data: experience }) => (
         <li class="experience" data-step>
           <p class="label">
             {formatPeriod(experience.start, experience.end, locale, dictionary.present)}
@@ -34,38 +34,22 @@ const total = String(experiences.length).padStart(2, '0');
               {localize(experience.role, locale)}
               <span class="experience__company">{experience.company}</span>
             </h3>
-            <div class="experience__challenge">
+            <p class="experience__summary">{localize(experience.summary, locale)}</p>
+            <ul class="technology-list">
+              {experience.technologies.map((technology) => <li>{technology}</li>)}
+            </ul>
+            <DetailToggle locale={locale} />
+            <div class="experience__challenge step-detail">
               <p class="label label--accent">{dictionary.problem}</p>
               <p class="experience__problem">{localize(experience.challenge.problem, locale)}</p>
               <p class="label label--accent">{dictionary.approach}</p>
               <p>{localize(experience.challenge.approach, locale)}</p>
             </div>
-            <p class="experience__summary">{localize(experience.summary, locale)}</p>
-            <ul class="technology-list">
-              {experience.technologies.map((technology) => <li>{technology}</li>)}
-            </ul>
-            <p class="label step-counter">
-              {String(experienceIndex + 1).padStart(2, '0')} / {total}
-            </p>
           </div>
         </li>
       ))
     }
   </ol>
-  <p class="label only-immersive experience__hint">{dictionary.manualControlHint}</p>
-
-  <ul slot="overlay" class="scene-labels" aria-hidden="true">
-    {
-      experiences.map(({ data: experience }, experienceIndex) => (
-        <li class="scene-label" data-scene-label={`experience:${experienceIndex}`}>
-          <span class="scene-label__body">
-            <strong>{experience.company}</strong>
-            {experience.start.slice(0, 4)}
-          </span>
-        </li>
-      ))
-    }
-  </ul>
 </SectionShell>
 
 <style>
@@ -118,16 +102,6 @@ const total = String(experiences.length).padStart(2, '0');
 
   .experience__summary {
     color: var(--color-muted);
-  }
-
-  .experience__hint {
-    margin-top: var(--space-3);
-  }
-
-  @media (pointer: coarse) {
-    .experience__hint {
-      display: none;
-    }
   }
 
   @container (min-width: 44rem) {
