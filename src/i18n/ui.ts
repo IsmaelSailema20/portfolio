@@ -15,7 +15,6 @@ export interface UiDictionary {
   routeLabel: string;
   telemetryLabel: string;
   mission: string;
-  stop: string;
   stageNames: Record<StageId, string>;
   sectionTitles: Record<Exclude<StageId, 'home'>, string>;
   navigationItems: Record<Exclude<StageId, 'home'>, string>;
@@ -98,7 +97,6 @@ export const ui: Record<Locale, UiDictionary> = {
     routeLabel: 'Ruta de la misión',
     telemetryLabel: 'Telemetría',
     mission: 'Misión',
-    stop: 'Parada',
     stageNames: {
       home: 'Base de lanzamiento',
       about: 'Estación orbital',
@@ -202,7 +200,6 @@ export const ui: Record<Locale, UiDictionary> = {
     routeLabel: 'Mission route',
     telemetryLabel: 'Telemetry',
     mission: 'Mission',
-    stop: 'Stop',
     stageNames: {
       home: 'Launch base',
       about: 'Orbital station',

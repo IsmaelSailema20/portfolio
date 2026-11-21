@@ -2,7 +2,7 @@
 import StageIllustration from './StageIllustration.astro';
 import StepNavigation from './StepNavigation.astro';
 import type { Locale } from '../../i18n/locales';
-import { stageIds, type StageId, ui } from '../../i18n/ui';
+import { type StageId, ui } from '../../i18n/ui';
 
 interface Props {
   stageId: StageId;
@@ -13,9 +13,7 @@ interface Props {
 }
 
 const { stageId, locale, side, itemCount = 0, stepCount = 1 } = Astro.props;
-const dictionary = ui[locale];
-const stopNumber = String(stageIds.indexOf(stageId) + 1).padStart(2, '0');
-const title = stageId === 'home' ? undefined : dictionary.sectionTitles[stageId];
+const title = stageId === 'home' ? undefined : ui[locale].sectionTitles[stageId];
 ---
 
 <section
@@ -31,10 +29,6 @@ const title = stageId === 'home' ? undefined : dictionary.sectionTitles[stageId]
     <div class="panel">
       <header class="stage__header">
         <div class="stage__heading">
-          <p class="label label--accent">
-            {dictionary.stop}
-            {stopNumber} · {dictionary.stageNames[stageId]}
-          </p>
           {title && <h2 class="stage__title" id={`${stageId}-title`}>{title}</h2>}
         </div>
         {
