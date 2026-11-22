@@ -29,6 +29,9 @@ const experiences = (await getCollection('experience')).sort((first, second) =>
 const educationEntries = (await getCollection('education')).sort(
   (first, second) => second.data.start - first.data.start,
 );
+const courses = (await getCollection('courses')).sort(
+  (first, second) => second.data.year - first.data.year,
+);
 const projects = (await getCollection('projects')).sort(
   (first, second) =>
     projectCategories.indexOf(first.data.category) -
@@ -42,7 +45,12 @@ const projects = (await getCollection('projects')).sort(
   ownerName={profile.name}
 >
   <Hero locale={locale} profile={profile} />
-  <About locale={locale} profile={profile} educationEntries={educationEntries} />
+  <About
+    locale={locale}
+    profile={profile}
+    educationEntries={educationEntries}
+    courses={courses}
+  />
   <Skills locale={locale} skillGroups={skillGroups} />
   <Projects locale={locale} projects={projects} />
   <Experience locale={locale} experiences={experiences} />

@@ -2,15 +2,27 @@ order: 2
 year: 2025
 category: personal
 title:
-  es: Gestión de seguros
-  en: Insurance management
+  es: Walk Seguros
+  en: Walk Seguros
 summary:
-  es: Aplicación web para administrar clientes, contratos, pagos y reembolsos de seguros.
-  en: Web application to manage insurance customers, contracts, payments and refunds.
+  es: Sistema para que una aseguradora gestione pólizas, clientes, pagos y reembolsos en un solo lugar, con paneles separados para administrador, agente y cliente.
+  en: System for an insurance company to manage policies, customers, payments and refunds in one place, with separate dashboards for admins, agents and customers.
 description:
-  es: Incluye formularios de clientes y beneficiarios, carga y vista previa de documentos PDF, tablas de pagos, estadísticas y rutas protegidas con JWT, con pruebas unitarias de los componentes.
-  en: It includes customer and beneficiary forms, PDF upload and preview, payment tables, statistics and JWT protected routes, with unit tests for the components.
-image: projects/gestion-seguros.svg
+  es: Fui el principal contribuidor del frontend en un equipo de cinco. Construí con React los paneles por rol, los formularios de clientes y beneficiarios, la revisión de contratos en PDF antes de la firma, las tablas de pagos con estadísticas y las rutas protegidas con JWT, con pruebas unitarias de los componentes.
+  en: I was the main frontend contributor in a team of five. I built the role-based dashboards in React, the customer and beneficiary forms, the PDF contract review before signing, the payment tables with statistics and the JWT protected routes, with unit tests for the components.
+images:
+  - source: projects/gestion-seguros/01-portada.webp
+    caption:
+      es: Inicio de sesión y portal del cliente
+      en: Login and customer portal
+  - source: projects/gestion-seguros/02-paneles.webp
+    caption:
+      es: Paneles por rol
+      en: Role-based dashboards
+  - source: projects/gestion-seguros/03-contrato.webp
+    caption:
+      es: Contratos en PDF
+      en: PDF contracts
 technologies: [React, Vite, PrimeReact, Chart.js, JWT]
 repository: https://github.com/IsmaelSailema20/GestionSegurosFrontend
 demo: https://gestion-seguros-frontend.vercel.app

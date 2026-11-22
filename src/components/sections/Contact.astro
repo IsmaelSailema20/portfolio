@@ -1,9 +1,9 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import SectionShell from '../ui/SectionShell.astro';
-import { localize, type Locale } from '../../i18n/locales';
-import { joinBasePath } from '../../i18n/paths';
+import type { Locale } from '../../i18n/locales';
 import { ui } from '../../i18n/ui';
+import { contactFormAccessKey } from '../../../site.config';
 
 interface Props {
   locale: Locale;
@@ -12,7 +12,6 @@ interface Props {
 
 const { locale, profile } = Astro.props;
 const dictionary = ui[locale].contact;
-const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.curriculum, locale));
 ---
 
 <SectionShell stageId="contact" locale={locale} side="left">
@@ -33,11 +32,22 @@ const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.c
       ))
     }
   </ul>
-  <form class="contact-form" data-contact-form data-recipient={profile.email}>
+  <form
+    class="contact-form"
+    data-contact-form
+    data-access-key={contactFormAccessKey}
+    data-sending-message={dictionary.sending}
+    data-success-message={dictionary.success}
+    data-failure-message={dictionary.failure}
+  >
     <h3 class="label label--accent">{dictionary.formTitle}</h3>
     <label class="contact-form__field">
       <span class="label">{dictionary.nameLabel}</span>
       <input type="text" name="name" autocomplete="name" required />
+    </label>
+    <label class="contact-form__field">
+      <span class="label">{dictionary.emailLabel}</span>
+      <input type="email" name="email" autocomplete="email" required />
     </label>
     <label class="contact-form__field">
       <span class="label">{dictionary.subjectLabel}</span>
@@ -47,18 +57,23 @@ const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.c
       <span class="label">{dictionary.messageLabel}</span>
       <textarea name="message" rows="5" required></textarea>
     </label>
+    <input
+      class="contact-form__trap"
+      type="checkbox"
+      name="botcheck"
+      tabindex="-1"
+      autocomplete="off"
+      aria-hidden="true"
+    />
     <div class="contact-form__footer">
       <button class="button" type="submit" data-magnetic>{dictionary.send} →</button>
       <p class="contact-form__hint">{dictionary.formHint}</p>
     </div>
+    <p class="contact-form__status" role="status" data-contact-status></p>
   </form>
   <div class="contact__actions">
-    <a class="button" href={curriculumPath} download data-curriculum-link data-magnetic>
-      {dictionary.downloadCurriculum} ↓
-    </a>
-    <button class="button button--quiet" type="button" data-wormhole-jump data-magnetic>
-      <span class="only-immersive">{dictionary.crossWormhole} →</span>
-      <span class="only-classic">{dictionary.backToStart} ↑</span>
+    <button class="button" type="button" data-wormhole-jump data-magnetic>
+      {dictionary.crossWormhole} →
     </button>
   </div>
 </SectionShell>
@@ -78,12 +93,22 @@ const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.c
 
   .contact__links li {
     display: flex;
-    flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--space-1) var(--space-3);
     padding-block: var(--space-2);
     border-top: 1px solid var(--color-line);
+  }
+
+  .contact__links .label {
+    flex-shrink: 0;
+  }
+
+  .contact__links a {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .contact-form {
@@ -132,6 +157,35 @@ const curriculumPath = joinBasePath(import.meta.env.BASE_URL, localize(profile.c
     max-width: 30ch;
     font-size: var(--text-small);
     color: var(--color-muted);
+  }
+
+  .contact-form button[type='submit']:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .contact-form__trap {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .contact-form__status {
+    min-height: 1.5em;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+  }
+
+  .contact-form__status[data-state='success'] {
+    color: var(--color-interactive);
+  }
+
+  .contact-form__status[data-state='failure'] {
+    color: var(--color-accent);
   }
 
   .contact__actions {

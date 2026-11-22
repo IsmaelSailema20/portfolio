@@ -32,7 +32,6 @@ const profile = defineCollection({
         url: z.url(),
       }),
     ),
-    curriculum: localizedText,
     portrait: z.string().min(1).optional(),
   }),
 });
@@ -72,6 +71,15 @@ const education = defineCollection({
   }),
 });
 
+const courses = defineCollection({
+  loader: glob({ pattern: '*.yaml', base: './src/content/courses' }),
+  schema: z.object({
+    title: localizedText,
+    institution: z.string().min(1),
+    year: z.number().int(),
+  }),
+});
+
 const projects = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/projects' }),
   schema: z.object({
@@ -82,10 +90,18 @@ const projects = defineCollection({
     summary: localizedText,
     description: localizedText,
     technologies: z.array(z.string().min(1)),
-    image: z.string().min(1).optional(),
+    images: z
+      .array(
+        z.object({
+          source: z.string().min(1),
+          caption: localizedText,
+        }),
+      )
+      .min(1)
+      .optional(),
     repository: z.url().optional(),
     demo: z.url().optional(),
   }),
 });
 
-export const collections = { profile, skills, experience, education, projects };
+export const collections = { profile, skills, experience, education, courses, projects };

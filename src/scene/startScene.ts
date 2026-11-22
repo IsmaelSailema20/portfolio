@@ -143,7 +143,7 @@ export function startScene(canvas: HTMLCanvasElement): SceneHandle {
 
   const rocket = createRocket(palette);
   const exhaust = createExhaust(palette, quality);
-  const starfield = createStarfield(quality);
+  const starfield = createStarfield(quality, palette);
   scene.add(
     createLighting(palette),
     starfield.group,

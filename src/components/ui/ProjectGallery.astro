@@ -1,0 +1,244 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { localize, type Locale } from '../../i18n/locales';
+import { joinBasePath } from '../../i18n/paths';
+import { ui } from '../../i18n/ui';
+import { formatSlideCounter } from '../../interactions/projectGallery';
+
+type ProjectImage = NonNullable<CollectionEntry<'projects'>['data']['images']>[number];
+
+interface Props {
+  locale: Locale;
+  title: string;
+  images: ProjectImage[];
+}
+
+const { locale, title, images } = Astro.props;
+const dictionary = ui[locale].projects.gallery;
+const hasSeveralImages = images.length > 1;
+---
+
+<div
+  class="gallery"
+  role="region"
+  aria-roledescription="carousel"
+  aria-label={`${dictionary.label} ${title}`}
+  style="--slide-index: 0"
+  data-gallery
+  data-slide-index="0"
+>
+  <div class="gallery__screen">
+    <ul class="gallery__track">
+      {
+        images.map((image, imageIndex) => (
+          <li
+            class="gallery__slide"
+            aria-roledescription="slide"
+            aria-label={formatSlideCounter(imageIndex, images.length)}
+            aria-hidden={imageIndex === 0 ? 'false' : 'true'}
+            data-gallery-slide
+          >
+            <img
+              class="gallery__image"
+              src={joinBasePath(import.meta.env.BASE_URL, image.source)}
+              alt={`${title} · ${localize(image.caption, locale)}`}
+              width="1600"
+              height="1000"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            />
+          </li>
+        ))
+      }
+    </ul>
+    {
+      hasSeveralImages && (
+        <>
+          <button
+            class="gallery__arrow gallery__arrow--previous"
+            type="button"
+            aria-label={dictionary.previous}
+            data-gallery-shift="-1"
+          >
+            ←
+          </button>
+          <button
+            class="gallery__arrow gallery__arrow--next"
+            type="button"
+            aria-label={dictionary.next}
+            data-gallery-shift="1"
+          >
+            →
+          </button>
+        </>
+      )
+    }
+  </div>
+  <div class="gallery__bar">
+    <div class="gallery__captions" aria-live="polite">
+      {
+        images.map((image, imageIndex) => (
+          <p class="label gallery__caption" hidden={imageIndex !== 0} data-gallery-caption>
+            {localize(image.caption, locale)}
+          </p>
+        ))
+      }
+    </div>
+    {
+      hasSeveralImages && (
+        <>
+          <ol class="gallery__dots">
+            {images.map((_, imageIndex) => (
+              <li>
+                <button
+                  class:list={['gallery__dot', { 'is-current': imageIndex === 0 }]}
+                  type="button"
+                  aria-label={`${dictionary.goTo} ${formatSlideCounter(imageIndex, images.length)}`}
+                  aria-current={imageIndex === 0 ? 'true' : undefined}
+                  data-gallery-target={imageIndex}
+                />
+              </li>
+            ))}
+          </ol>
+          <span class="label gallery__counter" aria-hidden="true" data-gallery-counter>
+            {formatSlideCounter(0, images.length)}
+          </span>
+        </>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .gallery {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .gallery__screen {
+    position: relative;
+    border: 1px solid rgb(111 214 232 / 0.35);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--color-void);
+    box-shadow:
+      0 0 48px rgb(111 214 232 / 0.14),
+      0 24px 40px -24px rgb(111 214 232 / 0.45);
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .gallery__track {
+    display: flex;
+    transform: translateX(calc(var(--slide-index) * -100%));
+  }
+
+  .gallery__slide {
+    flex: 0 0 100%;
+  }
+
+  .gallery__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: contain;
+  }
+
+  .gallery__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    padding: 0;
+    border: 1px solid rgb(111 214 232 / 0.45);
+    border-radius: 999px;
+    background: rgb(7 11 20 / 0.7);
+    font-family: var(--font-mono);
+    color: var(--color-interactive);
+    cursor: pointer;
+    opacity: 0.75;
+    translate: 0 -50%;
+    transition:
+      opacity var(--transition),
+      border-color var(--transition),
+      color var(--transition);
+  }
+
+  .gallery__arrow--previous {
+    left: var(--space-2);
+  }
+
+  .gallery__arrow--next {
+    right: var(--space-2);
+  }
+
+  .gallery__screen:hover .gallery__arrow,
+  .gallery__arrow:focus-visible {
+    opacity: 1;
+  }
+
+  .gallery__arrow:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .gallery__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .gallery__captions {
+    flex: 1 1 12rem;
+  }
+
+  .gallery__caption {
+    color: var(--color-interactive);
+  }
+
+  .gallery__dots {
+    display: flex;
+    gap: 0.45rem;
+  }
+
+  .gallery__dot {
+    display: block;
+    width: 0.55rem;
+    height: 0.55rem;
+    padding: 0;
+    border: 1px solid var(--color-muted);
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    transition:
+      width var(--transition),
+      background-color var(--transition),
+      border-color var(--transition);
+  }
+
+  .gallery__dot:hover {
+    border-color: var(--color-interactive);
+  }
+
+  .gallery__dot.is-current {
+    width: 1.4rem;
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+  }
+
+  .gallery__counter {
+    color: var(--color-muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .gallery__track {
+      transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+</style>

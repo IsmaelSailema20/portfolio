@@ -15,7 +15,6 @@ export interface UiDictionary {
   routeLabel: string;
   telemetryLabel: string;
   mission: string;
-  stop: string;
   stageNames: Record<StageId, string>;
   sectionTitles: Record<Exclude<StageId, 'home'>, string>;
   navigationItems: Record<Exclude<StageId, 'home'>, string>;
@@ -45,6 +44,7 @@ export interface UiDictionary {
     objectiveTitle: string;
     biographyTitle: string;
     educationTitle: string;
+    coursesTitle: string;
   };
   experience: {
     present: string;
@@ -56,19 +56,27 @@ export interface UiDictionary {
     demo: string;
     manualControlHint: string;
     categories: Record<ProjectCategory, string>;
+    gallery: {
+      label: string;
+      previous: string;
+      next: string;
+      goTo: string;
+    };
   };
   contact: {
     lead: string;
     email: string;
     formTitle: string;
     nameLabel: string;
+    emailLabel: string;
     subjectLabel: string;
     messageLabel: string;
     send: string;
     formHint: string;
-    downloadCurriculum: string;
+    sending: string;
+    success: string;
+    failure: string;
     crossWormhole: string;
-    backToStart: string;
   };
   footer: {
     madeIn: string;
@@ -90,7 +98,6 @@ export const ui: Record<Locale, UiDictionary> = {
     routeLabel: 'Ruta de la misión',
     telemetryLabel: 'Telemetría',
     mission: 'Misión',
-    stop: 'Parada',
     stageNames: {
       home: 'Base de lanzamiento',
       about: 'Estación orbital',
@@ -139,6 +146,7 @@ export const ui: Record<Locale, UiDictionary> = {
       objectiveTitle: 'Objetivo profesional',
       biographyTitle: 'Quién soy',
       educationTitle: 'Formación',
+      coursesTitle: 'Cursos y certificaciones',
     },
     experience: {
       present: 'Actualidad',
@@ -154,19 +162,27 @@ export const ui: Record<Locale, UiDictionary> = {
         contribution: 'Colaboración',
         client: 'Cliente',
       },
+      gallery: {
+        label: 'Capturas de',
+        previous: 'Imagen anterior',
+        next: 'Imagen siguiente',
+        goTo: 'Ver imagen',
+      },
     },
     contact: {
       lead: 'Escríbeme o revisa mi trabajo. Respondo en español e inglés.',
       email: 'Correo',
       formTitle: 'Envíame un mensaje',
       nameLabel: 'Nombre',
+      emailLabel: 'Tu correo',
       subjectLabel: 'Asunto',
       messageLabel: 'Mensaje',
       send: 'Enviar mensaje',
-      formHint: 'Se abrirá tu aplicación de correo con el mensaje listo para enviar.',
-      downloadCurriculum: 'Descargar CV',
-      crossWormhole: 'Atravesar el agujero',
-      backToStart: 'Volver al inicio',
+      formHint: 'Te responderé al correo que indiques.',
+      sending: 'Enviando transmisión…',
+      success: 'Mensaje recibido. Te responderé pronto.',
+      failure: 'No se pudo enviar. Inténtalo de nuevo o escríbeme al correo.',
+      crossWormhole: 'Atravesar el agujero de gusano',
     },
     footer: {
       madeIn: 'Hecho en Ambato, Ecuador',
@@ -186,7 +202,6 @@ export const ui: Record<Locale, UiDictionary> = {
     routeLabel: 'Mission route',
     telemetryLabel: 'Telemetry',
     mission: 'Mission',
-    stop: 'Stop',
     stageNames: {
       home: 'Launch base',
       about: 'Orbital station',
@@ -235,6 +250,7 @@ export const ui: Record<Locale, UiDictionary> = {
       objectiveTitle: 'Career goal',
       biographyTitle: 'Who I am',
       educationTitle: 'Education',
+      coursesTitle: 'Courses and certifications',
     },
     experience: {
       present: 'Present',
@@ -250,19 +266,27 @@ export const ui: Record<Locale, UiDictionary> = {
         contribution: 'Contribution',
         client: 'Client',
       },
+      gallery: {
+        label: 'Screenshots of',
+        previous: 'Previous image',
+        next: 'Next image',
+        goTo: 'Show image',
+      },
     },
     contact: {
       lead: 'Write to me or take a look at my work. I reply in Spanish and English.',
       email: 'Email',
       formTitle: 'Send me a message',
       nameLabel: 'Name',
+      emailLabel: 'Your email',
       subjectLabel: 'Subject',
       messageLabel: 'Message',
       send: 'Send message',
-      formHint: 'Your email app will open with the message ready to send.',
-      downloadCurriculum: 'Download CV',
+      formHint: 'I will reply to the email you provide.',
+      sending: 'Sending transmission…',
+      success: 'Message received. I will get back to you soon.',
+      failure: 'The message could not be sent. Try again or email me directly.',
       crossWormhole: 'Cross the wormhole',
-      backToStart: 'Back to start',
     },
     footer: {
       madeIn: 'Made in Ambato, Ecuador',

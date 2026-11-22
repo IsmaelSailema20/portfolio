@@ -5,11 +5,23 @@ title:
   es: ChallengeHub
   en: ChallengeHub
 summary:
-  es: Plataforma web y móvil para crear, buscar y suscribirse a retos.
-  en: Web and mobile platform to create, search and subscribe to challenges.
+  es: Plataforma web y móvil para mantener la motivación con retos. Los creadores publican desafíos y los usuarios los buscan por categoría, se suscriben y siguen su progreso.
+  en: Web and mobile platform to stay motivated through challenges. Creators publish challenges and users search them by category, subscribe and track their progress.
 description:
-  es: Desarrollé pantallas de la versión web y de la app móvil, con suscripciones, comentarios y reacciones, además de endpoints en Spring Boot para buscar retos y creadores por categoría.
-  en: I built screens for the web version and the mobile app, with subscriptions, comments and reactions, plus Spring Boot endpoints to search challenges and creators by category.
-image: projects/challengehub.svg
+  es: En un equipo de cuatro, desarrollé pantallas de la web y de la app móvil con React y React Native, como las suscripciones, los comentarios y las reacciones, además de endpoints en Spring Boot para buscar retos y creadores por categoría.
+  en: In a team of four, I built screens for the web and the mobile app with React and React Native, such as subscriptions, comments and reactions, plus Spring Boot endpoints to search challenges and creators by category.
+images:
+  - source: projects/challengehub/01-portada.webp
+    caption:
+      es: Portada de la plataforma
+      en: Platform overview
+  - source: projects/challengehub/02-web.webp
+    caption:
+      es: Panel web del creador
+      en: Creator web dashboard
+  - source: projects/challengehub/03-movil.webp
+    caption:
+      es: App móvil
+      en: Mobile app
 technologies: [React, React Native, Expo, Spring Boot, Auth0]
 repository: https://github.com/W1llAn/Frontend_ChallengeHub_Movile
