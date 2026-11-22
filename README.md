@@ -23,15 +23,15 @@ Mi portafolio como un viaje en cohete: despegas desde Ecuador y, a medida que ha
 ## Ejecutar
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-| Comando                 | Acción                        |
-| ----------------------- | ----------------------------- |
-| `npm run dev`           | Servidor de desarrollo        |
-| `npm run build`         | Genera el sitio en `dist/`    |
-| `npm test`              | Tests unitarios               |
-| `npm run test:mutation` | Tests de mutación             |
+| Comando                  | Acción                        |
+| ------------------------ | ----------------------------- |
+| `pnpm dev`               | Servidor de desarrollo        |
+| `pnpm build`             | Genera el sitio en `dist/`    |
+| `pnpm test`              | Tests unitarios               |
+| `pnpm test:mutation`     | Tests de mutación             |
 
 El contenido se edita en los archivos YAML de `src/content/`.
