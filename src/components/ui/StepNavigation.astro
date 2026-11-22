@@ -1,0 +1,114 @@
+---
+import type { Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  stepCount: number;
+}
+
+const { locale, stepCount } = Astro.props;
+const dictionary = ui[locale].stepNavigation;
+const stepNumbers = Array.from({ length: stepCount }, (_, stepIndex) => stepIndex + 1);
+---
+
+<nav class="step-navigation" aria-label={dictionary.label}>
+  <button
+    class="step-navigation__arrow"
+    type="button"
+    data-step-shift="-1"
+    aria-label={dictionary.previous}
+  >
+    ←
+  </button>
+  <ol class="step-navigation__dots">
+    {
+      stepNumbers.map((stepNumber) => (
+        <li>
+          <button
+            class="step-navigation__dot"
+            type="button"
+            data-step-target={stepNumber - 1}
+            aria-label={`${dictionary.goTo} ${stepNumber} / ${stepCount}`}
+          />
+        </li>
+      ))
+    }
+  </ol>
+  <button class="step-navigation__arrow" type="button" data-step-shift="1" aria-label={dictionary.next}>
+    →
+  </button>
+</nav>
+
+<style>
+  .step-navigation {
+    display: none;
+  }
+
+  :global([data-mode='immersive']) :global(.stage.is-stepping) .step-navigation {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-line);
+    background: var(--panel-backdrop);
+  }
+
+  .step-navigation__dots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .step-navigation__dot {
+    display: block;
+    width: 0.6rem;
+    height: 0.6rem;
+    padding: 0;
+    border: 1px solid var(--color-muted);
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    transition:
+      width var(--transition),
+      background-color var(--transition),
+      border-color var(--transition);
+  }
+
+  .step-navigation__dot:hover {
+    border-color: var(--color-interactive);
+  }
+
+  .step-navigation__dot.is-current {
+    width: 1.6rem;
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+  }
+
+  .step-navigation__arrow {
+    display: grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition:
+      border-color var(--transition),
+      color var(--transition);
+  }
+
+  .step-navigation__arrow:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+</style>

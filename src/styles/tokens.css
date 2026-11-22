@@ -1,0 +1,50 @@
+:root {
+  --color-void: #070b14;
+  --color-surface: #0d1422;
+  --color-line: #222c40;
+  --color-text: #ece7df;
+  --color-muted: #8f98ab;
+  --color-accent: #f2a03d;
+  --color-interactive: #6fd6e8;
+
+  --flag-yellow: #ffd100;
+  --flag-blue: #0b4ea2;
+  --flag-red: #e0232e;
+  --flag-emblem: #d9a520;
+
+  --scene-hull: #e6e1d8;
+  --scene-hull-dark: #2b3142;
+  --scene-rock: #3b3842;
+  --scene-moon: #8d8a86;
+  --scene-snow: #d9d4cb;
+  --scene-ocean: #0c2740;
+  --scene-land: #3d5a47;
+  --scene-sky-horizon: #f08a3c;
+  --scene-sky-middle: #5b3a63;
+  --scene-sky-zenith: #0a1024;
+  --scene-solar-panel: #16284d;
+  --scene-wormhole: #bcd6ff;
+
+  --font-display: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --text-small: 0.8125rem;
+  --text-body: 1.0625rem;
+  --text-lead: clamp(1.15rem, 0.9rem + 0.9vw, 1.45rem);
+  --text-title: clamp(1.9rem, 1.3rem + 2.4vw, 3rem);
+  --text-hero: clamp(2.8rem, 1.4rem + 6.4vw, 6.5rem);
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 7rem;
+
+  --content-width: 68rem;
+  --panel-width: 31rem;
+  --header-height: 4rem;
+  --radius: 3px;
+  --panel-backdrop: rgb(7 11 20 / 0.8);
+  --transition: 220ms ease;
+}

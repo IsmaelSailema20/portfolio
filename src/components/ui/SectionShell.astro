@@ -1,0 +1,47 @@
+---
+import StageIllustration from './StageIllustration.astro';
+import StepNavigation from './StepNavigation.astro';
+import type { Locale } from '../../i18n/locales';
+import { type StageId, ui } from '../../i18n/ui';
+
+interface Props {
+  stageId: StageId;
+  locale: Locale;
+  side: 'left' | 'right' | 'center';
+  itemCount?: number;
+  stepCount?: number;
+}
+
+const { stageId, locale, side, itemCount = 0, stepCount = 1 } = Astro.props;
+const title = stageId === 'home' ? undefined : ui[locale].sectionTitles[stageId];
+---
+
+<section
+  id={stageId}
+  class="stage"
+  data-stage={stageId}
+  data-side={side}
+  data-item-count={itemCount}
+  style={`--steps: ${stepCount}`}
+  aria-labelledby={`${stageId}-title`}
+>
+  <div class="container">
+    <div class="panel">
+      <header class="stage__header">
+        <div class="stage__heading">
+          {title && <h2 class="stage__title" id={`${stageId}-title`}>{title}</h2>}
+        </div>
+        {
+          title && (
+            <div class="stage__illustration only-classic">
+              <StageIllustration stageId={stageId} />
+            </div>
+          )
+        }
+      </header>
+      <slot />
+      {stepCount > 1 && <StepNavigation locale={locale} stepCount={stepCount} />}
+    </div>
+  </div>
+  <slot name="overlay" />
+</section>

@@ -13,6 +13,10 @@
     "src/scene/core/panelMath.ts",
     "src/scene/core/telemetry.ts",
     "src/interactions/mission.ts",
+    "src/interactions/contactForm.ts",
+    "src/interactions/projectGallery.ts",
+    "src/interactions/sectionNavigation.ts",
+    "src/components/ui/technologyIcons.ts",
     "src/interactions/modeResolution.ts",
     "src/minigame/rules.ts"
   ]

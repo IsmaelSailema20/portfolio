@@ -1,0 +1,31 @@
+order: 3
+year: 2025
+category: contribution
+title:
+  es: HuellitaSoft
+  en: HuellitaSoft
+summary:
+  es: Sistema para clínicas veterinarias con varias sucursales. Centraliza veterinarios, mascotas, historias clínicas y citas, y da a los dueños una app para agendar y seguir la salud de sus mascotas.
+  en: System for veterinary clinics with several branches. It centralizes vets, pets, medical records and appointments, and gives owners an app to book visits and follow their pets' health.
+description:
+  es: En un equipo de cinco, trabajé en las tres capas. Participé en la API con Spring Boot, en el panel web para administradores y veterinarios con la gestión y la historia clínica, y en la app móvil donde los dueños agendan citas y encuentran veterinarias cercanas en un mapa.
+  en: In a team of five, I worked across all three layers. I contributed to the Spring Boot API, the web dashboard for admins and vets with management and medical records, and the mobile app where owners book appointments and find nearby clinics on a map.
+images:
+  - source: projects/huellitasoft/01-portada.webp
+    caption:
+      es: Portada de la plataforma
+      en: Platform overview
+  - source: projects/huellitasoft/02-admin.webp
+    caption:
+      es: Panel de administración
+      en: Admin dashboard
+  - source: projects/huellitasoft/03-clinica.webp
+    caption:
+      es: Historia clínica y dashboard
+      en: Medical records and dashboard
+  - source: projects/huellitasoft/04-movil.webp
+    caption:
+      es: App móvil para dueños
+      en: Mobile app for pet owners
+technologies: [Spring Boot, React, TypeScript, React Native, Auth0]
+repository: https://github.com/W1llAn/Backend_Huellitasoft

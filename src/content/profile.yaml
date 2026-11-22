@@ -1,0 +1,27 @@
+name: Ismael Sailema
+location: Ambato, Ecuador
+email: ismaelsailema110@gmail.com
+role:
+  es: Desarrollador de Software
+  en: Software Developer
+tagline:
+  es: Construyo software que marca la diferencia, del backend a la interfaz, desde el centro del Ecuador.
+  en: I build software that makes a difference, from the backend to the interface, from the heart of Ecuador.
+objective:
+  es: Crecer como desarrollador backend construyendo servicios seguros, probados y fáciles de mantener, y aportar a equipos que valoren el código limpio, la arquitectura sólida y las metodologías ágiles.
+  en: Grow as a backend developer by building secure, tested and maintainable services, and contribute to teams that value clean code, solid architecture and agile methodologies.
+bio:
+  es:
+    - Soy estudiante de Ingeniería en Software en la Universidad Técnica de Ambato y desarrollador backend en Firma Segura, donde trabajo con Java y Spring Boot en microservicios. También construyo interfaces con React y TypeScript cuando el producto lo necesita.
+    - Busco soluciones que combinen código limpio, arquitectura sólida y una buena experiencia de usuario. Fuera del código disfruto los videojuegos, la ciencia ficción, la naturaleza y la música para concentrarme.
+  en:
+    - I am a Software Engineering student at Universidad Técnica de Ambato and a backend developer at Firma Segura, where I work with Java and Spring Boot on microservices. I also build interfaces with React and TypeScript when the product needs it.
+    - I look for solutions that combine clean code, solid architecture and a good user experience. Outside of code I enjoy video games, science fiction, nature and music to focus.
+links:
+  - kind: github
+    label: GitHub
+    url: https://github.com/IsmaelSailema20
+  - kind: linkedin
+    label: LinkedIn
+    url: https://www.linkedin.com/in/ismael-sailema-a04089287
+portrait: images/avatar-astronauta.svg

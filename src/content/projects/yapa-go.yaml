@@ -1,0 +1,31 @@
+order: 1
+year: 2026
+category: personal
+title:
+  es: YapaSegura
+  en: YapaSegura
+summary:
+  es: Marketplace contra el desperdicio de alimentos en Ecuador. Los comercios venden sus excedentes en packs a bajo precio y los clientes los encuentran en un mapa, los reservan y los retiran.
+  en: Marketplace against food waste in Ecuador. Shops sell their surplus food in low-cost packs, and customers find them on a map, reserve them and pick them up.
+description:
+  es: Lo desarrollé de principio a fin con Next.js y Supabase. Incluye registro por rol para clientes y comercios, un mapa con Leaflet para ubicar packs cercanos, reservas cuyo retiro se valida con un código OTP y un panel del comercio con reportes que muestran cuánto costo recupera.
+  en: I built it end to end with Next.js and Supabase. It includes role-based sign-up for customers and shops, a Leaflet map to find nearby packs, reservations whose pickup is validated with an OTP code and a shop dashboard with reports that show how much cost it recovers.
+images:
+  - source: projects/yapa-go/01-portada.webp
+    caption:
+      es: Portada de la plataforma
+      en: Platform overview
+  - source: projects/yapa-go/02-cliente.webp
+    caption:
+      es: Experiencia del cliente
+      en: Customer experience
+  - source: projects/yapa-go/03-comercio.webp
+    caption:
+      es: Panel del comercio
+      en: Shop dashboard
+  - source: projects/yapa-go/04-registro.webp
+    caption:
+      es: Registro por rol
+      en: Role-based sign-up
+technologies: [Next.js, TypeScript, Supabase, Leaflet, Tailwind CSS]
+repository: https://github.com/IsmaelSailema20/Yapa-go

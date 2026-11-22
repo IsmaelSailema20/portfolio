@@ -1,0 +1,160 @@
+---
+import type { StageId } from '../../i18n/ui';
+
+interface Props {
+  stageId: StageId;
+}
+
+const { stageId } = Astro.props;
+
+const swarmOrbitRadius = 38;
+const swarmPanelRadius = 9;
+const swarmPanelCount = 5;
+const portalRingRadii = [46, 36, 27, 19, 12];
+
+function hexagonPoints(centerX: number, centerY: number, radius: number): string {
+  return Array.from({ length: 6 }, (_, corner) => {
+    const angle = (corner / 6) * Math.PI * 2;
+    const x = centerX + Math.cos(angle) * radius;
+    const y = centerY + Math.sin(angle) * radius;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+}
+
+const swarmPanels = Array.from({ length: swarmPanelCount }, (_, panel) => {
+  const angle = (panel / swarmPanelCount) * Math.PI * 2 - Math.PI / 2;
+  return hexagonPoints(
+    60 + Math.cos(angle) * swarmOrbitRadius,
+    60 + Math.sin(angle) * swarmOrbitRadius,
+    swarmPanelRadius,
+  );
+});
+---
+
+<svg class="stage-illustration" viewBox="0 0 120 120" aria-hidden="true">
+  {
+    stageId === 'home' && (
+      <g>
+        <path class="accent" d="M54 100 A15 15 0 0 1 84 100" />
+        <path d="M6 100 H114" />
+        <path d="M10 100 L40 56 L50 67 L58 59 L88 100" />
+        <path d="M34 65 L40 56 L50 67" />
+        <path d="M98 58 C103 64 104 72 104 80 V94 H92 V80 C92 72 93 64 98 58 Z" />
+        <path d="M92 88 L87 100 M104 88 L109 100" />
+        <path class="flag-yellow" d="M92 78 H104" />
+        <path class="flag-blue" d="M92 81.500 H104" />
+        <path class="flag-red" d="M92 84.500 H104" />
+        <ellipse class="emblem" cx="98" cy="81.250" rx="2.400" ry="3.100" />
+      </g>
+    )
+  }
+  {
+    stageId === 'about' && (
+      <g>
+        <path d="M2 118 Q60 90 118 118" />
+        <circle cx="60" cy="54" r="34" />
+        <circle cx="60" cy="54" r="8" />
+        <path d="M60 20 V88 M26 54 H94" />
+        <rect class="accent" x="32" y="26" width="8" height="8" />
+        <rect class="accent" x="80" y="26" width="8" height="8" />
+        <rect class="accent" x="32" y="74" width="8" height="8" />
+        <rect class="accent" x="80" y="74" width="8" height="8" />
+      </g>
+    )
+  }
+  {
+    stageId === 'skills' && (
+      <g>
+        <ellipse class="dashed" cx="60" cy="62" rx="50" ry="44" />
+        <circle cx="60" cy="62" r="32" />
+        <circle cx="50" cy="78" r="5" />
+        <circle cx="76" cy="84" r="3" />
+        <circle cx="80" cy="50" r="3" />
+        <path d="M34 60 H48 M56 44 H70 M64 70 H78 M42 90 H54" />
+        <path class="accent" d="M36 60 a5 5 0 0 1 10 0 M58 44 a5 5 0 0 1 10 0 M66 70 a5 5 0 0 1 10 0 M44 90 a4 4 0 0 1 8 0" />
+        <circle class="accent filled" cx="60" cy="18" r="3" />
+      </g>
+    )
+  }
+  {
+    stageId === 'projects' && (
+      <g>
+        <path d="M22 28 l9 -4 l7 5 l-2 9 l-10 3 l-6 -6 z" />
+        <path d="M82 92 l10 -3 l6 7 l-4 8 l-10 0 z" />
+        <path d="M58 100 l5 -2 l4 4 l-3 5 l-6 -1 z" />
+        <path class="accent" d="M18 86 L46 52 L76 68 L102 26" />
+        <circle class="accent filled" cx="18" cy="86" r="3" />
+        <circle class="accent filled" cx="46" cy="52" r="3" />
+        <circle class="accent filled" cx="76" cy="68" r="3" />
+        <circle class="accent filled" cx="102" cy="26" r="3" />
+      </g>
+    )
+  }
+  {
+    stageId === 'experience' && (
+      <g>
+        <circle class="dashed" cx="60" cy="60" r={swarmOrbitRadius} />
+        <circle class="accent" cx="60" cy="60" r="12" />
+        {swarmPanels.map((points) => <polygon points={points} />)}
+      </g>
+    )
+  }
+  {
+    stageId === 'contact' && (
+      <g>
+        {
+          portalRingRadii.map((radius, ring) => (
+            <circle cx="60" cy="60" r={radius} opacity={1 - ring * 0.15} />
+          ))
+        }
+        <circle class="accent filled" cx="60" cy="60" r="3.500" />
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  .stage-illustration {
+    width: 100%;
+    height: auto;
+    fill: none;
+    stroke: var(--color-muted);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .accent {
+    stroke: var(--color-accent);
+  }
+
+  .filled {
+    fill: var(--color-accent);
+  }
+
+  .dashed {
+    stroke: var(--color-line);
+    stroke-dasharray: 2 4;
+  }
+
+  .emblem {
+    fill: var(--color-void);
+    stroke: var(--flag-emblem);
+    stroke-width: 1;
+  }
+
+  .flag-yellow {
+    stroke: var(--flag-yellow);
+    stroke-width: 2.4;
+  }
+
+  .flag-blue {
+    stroke: var(--flag-blue);
+    stroke-width: 2.4;
+  }
+
+  .flag-red {
+    stroke: var(--flag-red);
+    stroke-width: 2.4;
+  }
+</style>

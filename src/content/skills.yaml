@@ -1,0 +1,35 @@
+- id: backend
+  name:
+    es: Backend
+    en: Backend
+  description:
+    es: Donde trabajo a diario. Construyo microservicios y APIs REST pensando en la seguridad, las pruebas y en que otra persona pueda mantenerlos.
+    en: Where I work every day. I build microservices and REST APIs with security, tests and maintainability in mind.
+  items: [Java, Spring Boot, gRPC, NestJS, Node.js, Express, ASP.NET Core, FastAPI, Python]
+
+- id: data
+  name:
+    es: Datos y seguridad
+    en: Data and security
+  description:
+    es: Modelo bases de datos relacionales y protejo el acceso con autenticación por tokens y control de roles y permisos.
+    en: I model relational databases and protect access with token based authentication and role and permission control.
+  items: [PostgreSQL, MySQL, Supabase, OAuth2, JWT, Auth0]
+
+- id: frontend
+  name:
+    es: Frontend y móvil
+    en: Frontend and mobile
+  description:
+    es: Construyo interfaces web y móviles conectadas al backend, con componentes reutilizables y diseño responsivo.
+    en: I build web and mobile interfaces connected to the backend, with reusable components and responsive design.
+  items: [TypeScript, JavaScript, React, Next.js, Astro, Tailwind CSS, React Native]
+
+- id: tooling
+  name:
+    es: Herramientas
+    en: Tooling
+  description:
+    es: Contenedores, control de versiones y pruebas para entregar con confianza y trabajar en equipo.
+    en: Containers, version control and testing to ship with confidence and work as a team.
+  items: [Docker, Git, GitHub, Postman, Vitest, Notion]

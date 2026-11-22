@@ -1,0 +1,81 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ProjectMission from '../ui/ProjectMission.astro';
+import SectionShell from '../ui/SectionShell.astro';
+import { localize, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  projects: CollectionEntry<'projects'>[];
+}
+
+const { locale, projects } = Astro.props;
+const dictionary = ui[locale].projects;
+---
+
+<SectionShell
+  stageId="projects"
+  locale={locale}
+  side="left"
+  itemCount={projects.length}
+  stepCount={projects.length}
+>
+  <div class="mission-selector" style={`--mission-count: ${projects.length}`} data-mission-selector>
+    {
+      projects.map((project, projectIndex) => (
+        <ProjectMission
+          locale={locale}
+          project={project}
+          projectIndex={projectIndex}
+          isSelected={projectIndex === 0}
+        />
+      ))
+    }
+  </div>
+  <p class="label only-immersive projects__hint">{dictionary.manualControlHint}</p>
+
+  <ul slot="overlay" class="scene-labels" aria-hidden="true">
+    {
+      projects.map(({ data: project }, projectIndex) => (
+        <li class="scene-label" data-scene-label={`projects:${projectIndex}`}>
+          <span class="scene-label__body">
+            <strong>{localize(project.title, locale)}</strong>
+            {project.year}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</SectionShell>
+
+<style>
+  .mission-selector {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  @container (min-width: 52rem) {
+    .mission-selector {
+      grid-template-columns: minmax(15rem, 21rem) minmax(0, 1fr);
+      grid-template-rows: repeat(var(--mission-count), auto) 1fr;
+      gap: 0.35rem var(--space-5);
+    }
+  }
+
+  :global([data-mode='immersive']) .mission-selector {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+
+  .projects__hint {
+    margin-top: var(--space-3);
+  }
+
+  @media (pointer: coarse) {
+    .projects__hint {
+      display: none;
+    }
+  }
+</style>

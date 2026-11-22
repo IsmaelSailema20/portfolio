@@ -1,0 +1,181 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import HologramPortrait from '../ui/HologramPortrait.astro';
+import SectionShell from '../ui/SectionShell.astro';
+import { localize, type Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  profile: CollectionEntry<'profile'>['data'];
+  educationEntries: CollectionEntry<'education'>[];
+  courses: CollectionEntry<'courses'>[];
+}
+
+const { locale, profile, educationEntries, courses } = Astro.props;
+const dictionary = ui[locale].about;
+const presentLabel = ui[locale].experience.present;
+const blockCount = 3;
+---
+
+<SectionShell
+  stageId="about"
+  locale={locale}
+  side="right"
+  itemCount={blockCount}
+  stepCount={blockCount}
+>
+  <div class="about-layout">
+    {
+      profile.portrait && (
+        <div class="about-layout__portrait only-classic">
+          <HologramPortrait
+            source={profile.portrait}
+            name={profile.name}
+            description={dictionary.avatarAlt}
+          />
+        </div>
+      )
+    }
+    <div class="about">
+      <div class="about-block about-block--objective" data-step>
+        <h3 class="label label--accent">{dictionary.objectiveTitle}</h3>
+        <p class="about-block__objective">{localize(profile.objective, locale)}</p>
+      </div>
+      <div class="about-block" data-step>
+        <h3 class="label">{dictionary.biographyTitle}</h3>
+        {localize(profile.bio, locale).map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <div class="about-block" data-step>
+        <h3 class="label">{dictionary.educationTitle}</h3>
+        <ul class="education-list">
+          {
+            educationEntries.map(({ data: education }) => (
+              <li class="education">
+                <p class="education__degree">{localize(education.degree, locale)}</p>
+                <p class="education__institution">{education.institution}</p>
+                <p class="label">
+                  {education.start} — {education.end ?? presentLabel}
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+        {
+          courses.length > 0 && (
+            <div class="courses">
+              <h4 class="label">{dictionary.coursesTitle}</h4>
+              <ul class="course-list">
+                {courses.map(({ data: course }) => (
+                  <li class="course">
+                    <p class="course__title">{localize(course.title, locale)}</p>
+                    <p class="label course__meta">
+                      {course.institution} · {course.year}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</SectionShell>
+
+<style>
+  .about-layout {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .about-layout__portrait {
+    justify-self: center;
+  }
+
+  @container (min-width: 52rem) {
+    .about-layout {
+      grid-template-columns: 17rem minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+
+  .about {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    gap: var(--space-4) var(--space-5);
+  }
+
+  .about-block {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    max-width: 58ch;
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-line);
+    transition: border-color var(--transition);
+  }
+
+  .about-block:hover {
+    border-top-color: var(--color-accent);
+  }
+
+  .about-block--objective {
+    grid-column: 1 / -1;
+  }
+
+  .about-block__objective {
+    max-width: 48ch;
+    font-size: var(--text-lead);
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+
+  .education-list {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .education {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .education__degree {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .education__institution {
+    color: var(--color-muted);
+  }
+
+  .courses {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dashed var(--color-line);
+  }
+
+  .course-list {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .course {
+    display: grid;
+    gap: 0.2rem;
+    padding-left: var(--space-2);
+    border-left: 2px solid var(--color-interactive);
+  }
+
+  .course__title {
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .course__meta {
+    color: var(--color-muted);
+  }
+</style>

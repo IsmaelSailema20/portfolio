@@ -1,0 +1,196 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionShell from '../ui/SectionShell.astro';
+import type { Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+import { contactFormAccessKey } from '../../../site.config';
+
+interface Props {
+  locale: Locale;
+  profile: CollectionEntry<'profile'>['data'];
+}
+
+const { locale, profile } = Astro.props;
+const dictionary = ui[locale].contact;
+---
+
+<SectionShell stageId="contact" locale={locale} side="left">
+  <p class="contact__lead">{dictionary.lead}</p>
+  <ul class="contact__links">
+    <li>
+      <span class="label">{dictionary.email}</span>
+      <a href={`mailto:${profile.email}`}>{profile.email}</a>
+    </li>
+    {
+      profile.links.map((link) => (
+        <li>
+          <span class="label">{link.label}</span>
+          <a href={link.url} rel="me noopener" data-warp-link>
+            {link.url.replace(/^https?:\/\/(www\.)?/, '')}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <form
+    class="contact-form"
+    data-contact-form
+    data-access-key={contactFormAccessKey}
+    data-sending-message={dictionary.sending}
+    data-success-message={dictionary.success}
+    data-failure-message={dictionary.failure}
+  >
+    <h3 class="label label--accent">{dictionary.formTitle}</h3>
+    <label class="contact-form__field">
+      <span class="label">{dictionary.nameLabel}</span>
+      <input type="text" name="name" autocomplete="name" required />
+    </label>
+    <label class="contact-form__field">
+      <span class="label">{dictionary.emailLabel}</span>
+      <input type="email" name="email" autocomplete="email" required />
+    </label>
+    <label class="contact-form__field">
+      <span class="label">{dictionary.subjectLabel}</span>
+      <input type="text" name="subject" required />
+    </label>
+    <label class="contact-form__field">
+      <span class="label">{dictionary.messageLabel}</span>
+      <textarea name="message" rows="5" required></textarea>
+    </label>
+    <input
+      class="contact-form__trap"
+      type="checkbox"
+      name="botcheck"
+      tabindex="-1"
+      autocomplete="off"
+      aria-hidden="true"
+    />
+    <div class="contact-form__footer">
+      <button class="button" type="submit" data-magnetic>{dictionary.send} →</button>
+      <p class="contact-form__hint">{dictionary.formHint}</p>
+    </div>
+    <p class="contact-form__status" role="status" data-contact-status></p>
+  </form>
+  <div class="contact__actions">
+    <button class="button" type="button" data-wormhole-jump data-magnetic>
+      {dictionary.crossWormhole} →
+    </button>
+  </div>
+</SectionShell>
+
+<style>
+  .contact__lead {
+    max-width: 40ch;
+    font-size: var(--text-lead);
+    color: var(--color-muted);
+  }
+
+  .contact__links {
+    display: grid;
+    margin-block: var(--space-3);
+    max-width: 36rem;
+  }
+
+  .contact__links li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-3);
+    padding-block: var(--space-2);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .contact__links .label {
+    flex-shrink: 0;
+  }
+
+  .contact__links a {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contact-form {
+    display: grid;
+    gap: var(--space-2);
+    max-width: 36rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .contact-form__field {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .contact-form__field input,
+  .contact-form__field textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font: inherit;
+    transition: border-color var(--transition);
+  }
+
+  .contact-form__field textarea {
+    resize: vertical;
+  }
+
+  .contact-form__field input:hover,
+  .contact-form__field textarea:hover,
+  .contact-form__field input:focus,
+  .contact-form__field textarea:focus {
+    border-color: var(--color-accent);
+  }
+
+  .contact-form__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .contact-form__hint {
+    max-width: 30ch;
+    font-size: var(--text-small);
+    color: var(--color-muted);
+  }
+
+  .contact-form button[type='submit']:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .contact-form__trap {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .contact-form__status {
+    min-height: 1.5em;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+  }
+
+  .contact-form__status[data-state='success'] {
+    color: var(--color-interactive);
+  }
+
+  .contact-form__status[data-state='failure'] {
+    color: var(--color-accent);
+  }
+
+  .contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+</style>

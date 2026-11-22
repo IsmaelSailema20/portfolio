@@ -1,0 +1,41 @@
+---
+import type { Locale } from '../../i18n/locales';
+import { ui } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = ui[locale].detail;
+---
+
+<button class="detail-toggle" type="button" data-detail-toggle aria-expanded="false">
+  <span class="detail-toggle__show">{dictionary.show} +</span>
+  <span class="detail-toggle__hide">{dictionary.hide} −</span>
+</button>
+
+<style>
+  .detail-toggle {
+    display: inline-flex;
+    justify-self: start;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-interactive);
+    cursor: pointer;
+  }
+
+  .detail-toggle:hover {
+    color: var(--color-accent);
+  }
+
+  .detail-toggle[aria-expanded='true'] .detail-toggle__show,
+  .detail-toggle[aria-expanded='false'] .detail-toggle__hide {
+    display: none;
+  }
+</style>
